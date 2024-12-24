@@ -8,6 +8,6 @@
 
 <ModeWatcher />
 <Nav />
-<div class="p-6 font-serif">
+<div class="p-8 font-serif">
 	{@render children()}
 </div>
