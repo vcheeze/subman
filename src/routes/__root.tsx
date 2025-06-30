@@ -1,17 +1,19 @@
 /// <reference types="vite/client" />
+
+import { ClerkProvider } from '@clerk/tanstack-react-start'
+import type { QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
+  createRootRouteWithContext,
   HeadContent,
   Link,
   Outlet,
   Scripts,
-  createRootRouteWithContext,
 } from '@tanstack/react-router'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import * as React from 'react'
-import type { QueryClient } from '@tanstack/react-query'
-import { ClerkProvider } from '@clerk/tanstack-react-start'
+import type * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
+import { Header } from '~/components/Header'
 import { NotFound } from '~/components/NotFound'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
@@ -31,7 +33,8 @@ export const Route = createRootRouteWithContext<{
       ...seo({
         title:
           'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+        description:
+          'TanStack Start is a type-safe, client-first, full-stack React framework. ',
       }),
     ],
     links: [
@@ -79,12 +82,12 @@ function RootComponent() {
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
-      <html>
+      <html lang="en">
         <head>
           <HeadContent />
         </head>
         <body>
-          <div className="p-2 flex gap-2 text-lg">
+          {/* <div className="p-2 flex gap-2 text-lg">
             <Link
               to="/"
               activeProps={{
@@ -136,7 +139,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               This Route Does Not Exist
             </Link>
           </div>
-          <hr />
+          <hr /> */}
+          <Header />
           {children}
           <TanStackRouterDevtools position="bottom-right" />
           <ReactQueryDevtools buttonPosition="bottom-left" />

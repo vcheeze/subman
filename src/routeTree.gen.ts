@@ -11,6 +11,7 @@
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as DeferredRouteImport } from './routes/deferred'
@@ -31,6 +32,11 @@ import { ServerRoute as ApiUsersIdServerRouteImport } from './routes/api/users.$
 
 const rootServerRouteImport = createServerRootRoute()
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RedirectRoute = RedirectRouteImport.update({
   id: '/redirect',
   path: '/redirect',
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/deferred': typeof DeferredRoute
   '/privacy': typeof PrivacyRoute
   '/redirect': typeof RedirectRoute
+  '/terms': typeof TermsRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts/': typeof PostsIndexRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/deferred': typeof DeferredRoute
   '/privacy': typeof PrivacyRoute
   '/redirect': typeof RedirectRoute
+  '/terms': typeof TermsRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/posts': typeof PostsIndexRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/deferred': typeof DeferredRoute
   '/privacy': typeof PrivacyRoute
   '/redirect': typeof RedirectRoute
+  '/terms': typeof TermsRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -173,6 +182,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/privacy'
     | '/redirect'
+    | '/terms'
     | '/posts/$postId'
     | '/users/$userId'
     | '/posts/'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/privacy'
     | '/redirect'
+    | '/terms'
     | '/posts/$postId'
     | '/users/$userId'
     | '/posts'
@@ -202,6 +213,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/privacy'
     | '/redirect'
+    | '/terms'
     | '/_pathlessLayout/_nested-layout'
     | '/posts/$postId'
     | '/users/$userId'
@@ -220,6 +232,7 @@ export interface RootRouteChildren {
   DeferredRoute: typeof DeferredRoute
   PrivacyRoute: typeof PrivacyRoute
   RedirectRoute: typeof RedirectRoute
+  TermsRoute: typeof TermsRoute
   PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
 }
 export interface FileServerRoutesByFullPath {
@@ -249,6 +262,13 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/redirect': {
       id: '/redirect'
       path: '/redirect'
@@ -453,6 +473,7 @@ const rootRouteChildren: RootRouteChildren = {
   DeferredRoute: DeferredRoute,
   PrivacyRoute: PrivacyRoute,
   RedirectRoute: RedirectRoute,
+  TermsRoute: TermsRoute,
   PostsPostIdDeepRoute: PostsPostIdDeepRoute,
 }
 export const routeTree = rootRouteImport
