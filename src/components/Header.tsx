@@ -1,11 +1,22 @@
 import { Link } from '@tanstack/react-router'
-import { Menu, Shield, X } from 'lucide-react'
+import { Eye, EyeClosed, Menu, Shield, X } from 'lucide-react'
 import { useState } from 'react'
+import { authClient } from '~/utils/auth-client'
 import { Button } from './ui/button'
-import { Separator } from './ui/separator'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const links = [
     {
@@ -61,7 +72,61 @@ export function Header() {
           <Button size="sm" variant="ghost">
             Sign In
           </Button>
-          <Button size="sm">Sign Up</Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size="sm">Sign Up</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle className="font-serif text-2xl">
+                  Sign Up to Subman
+                </DialogTitle>
+                <DialogDescription>
+                  You're one button away from having full control over your subs
+                  🎉
+                </DialogDescription>
+              </DialogHeader>
+              <form
+                className="space-y-4"
+                onSubmit={async (event) => {
+                  event.preventDefault()
+                  try {
+                    const formData = new FormData(event.currentTarget)
+                    const jsonData = Object.fromEntries(formData.entries())
+                    console.log('jsonData :>> ', jsonData)
+                    await authClient.signUp.email(jsonData)
+                  } catch (ex) {}
+                }}
+              >
+                <div className="grid w-full items-center gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" name="email" type="email" />
+                </div>
+                <div className="grid w-full items-center gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <div className="flex w-full items-center gap-2">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                    />
+                    <Button
+                      onClick={() => setShowPassword((show) => !show)}
+                      size="icon"
+                      variant="outline"
+                    >
+                      {showPassword ? <Eye /> : <EyeClosed />}
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid w-full items-center gap-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input id="name" name="name" />
+                </div>
+                <Button>Sign Up</Button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Mobile menu button */}

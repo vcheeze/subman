@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Badge } from '~/components/ui/badge'
 import { Separator } from '~/components/ui/separator'
 
-export const Route = createFileRoute('/terms')({
+export const Route = createFileRoute('/_public/terms')({
   component: Privacy,
 })
 

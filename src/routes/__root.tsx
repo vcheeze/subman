@@ -1,26 +1,39 @@
 /// <reference types="vite/client" />
 
-import { ClerkProvider } from '@clerk/tanstack-react-start'
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   createRootRouteWithContext,
   HeadContent,
-  Link,
   Outlet,
   Scripts,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type * as React from 'react'
+// import { Toaster } from 'react-hot-toast'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
-import { Header } from '~/components/Header'
 import { NotFound } from '~/components/NotFound'
+import { ScrollArea } from '~/components/ui/scroll-area'
+import { getSession } from '~/server/get-session'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
+  user?: {
+    id: string
+    name: string
+    emailVerified: boolean
+    email: string
+    createdAt: Date
+    updatedAt: Date
+    image?: string | null | undefined | undefined
+  }
 }>()({
+  beforeLoad: async () => {
+    const session = await getSession()
+    return { user: session?.user }
+  },
   head: () => ({
     meta: [
       {
@@ -56,8 +69,8 @@ export const Route = createRootRouteWithContext<{
         sizes: '16x16',
         href: '/favicon-16x16.png',
       },
-      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
-      { rel: 'icon', href: '/favicon.ico' },
+      { rel: 'manifest', href: '/site.webmanifest', color: '#FDFDFC' },
+      { rel: 'icon', href: '/logo_dark.svg' },
     ],
   }),
   errorComponent: (props) => {
@@ -81,72 +94,17 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <head>
-          <HeadContent />
-        </head>
-        <body>
-          {/* <div className="p-2 flex gap-2 text-lg">
-            <Link
-              to="/"
-              activeProps={{
-                className: 'font-bold',
-              }}
-              activeOptions={{ exact: true }}
-            >
-              Home
-            </Link>{' '}
-            <Link
-              to="/posts"
-              activeProps={{
-                className: 'font-bold',
-              }}
-            >
-              Posts
-            </Link>{' '}
-            <Link
-              to="/users"
-              activeProps={{
-                className: 'font-bold',
-              }}
-            >
-              Users
-            </Link>{' '}
-            <Link
-              to="/route-a"
-              activeProps={{
-                className: 'font-bold',
-              }}
-            >
-              Pathless Layout
-            </Link>{' '}
-            <Link
-              to="/deferred"
-              activeProps={{
-                className: 'font-bold',
-              }}
-            >
-              Deferred
-            </Link>{' '}
-            <Link
-              // @ts-expect-error
-              to="/this-route-does-not-exist"
-              activeProps={{
-                className: 'font-bold',
-              }}
-            >
-              This Route Does Not Exist
-            </Link>
-          </div>
-          <hr /> */}
-          <Header />
-          {children}
-          <TanStackRouterDevtools position="bottom-right" />
-          <ReactQueryDevtools buttonPosition="bottom-left" />
-          <Scripts />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <ScrollArea className="h-screen">{children}</ScrollArea>
+        {/* <Toaster /> */}
+        <ReactQueryDevtools buttonPosition="bottom-left" />
+        <TanStackRouterDevtools position="bottom-right" />
+        <Scripts />
+      </body>
+    </html>
   )
 }

@@ -11,49 +11,32 @@
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as RedirectRouteImport } from './routes/redirect'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as DeferredRouteImport } from './routes/deferred'
-import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
+import { Route as PublicRouteImport } from './routes/_public'
+import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as UsersRouteRouteImport } from './routes/users.route'
-import { Route as PostsRouteRouteImport } from './routes/posts.route'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
-import { Route as PostsIndexRouteImport } from './routes/posts.index'
+import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
-import { Route as PostsPostIdRouteImport } from './routes/posts.$postId'
-import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
-import { Route as PostsPostIdDeepRouteImport } from './routes/posts_.$postId.deep'
-import { Route as PathlessLayoutNestedLayoutRouteBRouteImport } from './routes/_pathlessLayout/_nested-layout/route-b'
-import { Route as PathlessLayoutNestedLayoutRouteARouteImport } from './routes/_pathlessLayout/_nested-layout/route-a'
-import { ServerRoute as ApiUsersServerRouteImport } from './routes/api.users'
+import { Route as PublicTermsRouteImport } from './routes/_public/terms'
+import { Route as PublicSignupRouteImport } from './routes/_public/signup'
+import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
+import { Route as PublicLoginRouteImport } from './routes/_public/login'
+import { Route as PublicDemoRouteImport } from './routes/_public/demo'
+import { Route as PublicAboutRouteImport } from './routes/_public/about'
+import { Route as AuthedAppLandingRouteImport } from './routes/_authed/app-landing'
+import { Route as AuthedAppRouteImport } from './routes/_authed/app'
+import { Route as AuthedSubsAddRouteImport } from './routes/_authed/subs.add'
 import { ServerRoute as ApiUsersIdServerRouteImport } from './routes/api/users.$id'
+import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth.$'
 
 const rootServerRouteImport = createServerRootRoute()
 
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RedirectRoute = RedirectRouteImport.update({
-  id: '/redirect',
-  path: '/redirect',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DeferredRoute = DeferredRouteImport.update({
-  id: '/deferred',
-  path: '/deferred',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PathlessLayoutRoute = PathlessLayoutRouteImport.update({
-  id: '/_pathlessLayout',
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UsersRouteRoute = UsersRouteRouteImport.update({
@@ -61,240 +44,218 @@ const UsersRouteRoute = UsersRouteRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PostsRouteRoute = PostsRouteRouteImport.update({
-  id: '/posts',
-  path: '/posts',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const UsersIndexRoute = UsersIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => UsersRouteRoute,
 } as any)
-const PostsIndexRoute = PostsIndexRouteImport.update({
+const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => PostsRouteRoute,
+  getParentRoute: () => PublicRoute,
 } as any)
 const UsersUserIdRoute = UsersUserIdRouteImport.update({
   id: '/$userId',
   path: '/$userId',
   getParentRoute: () => UsersRouteRoute,
 } as any)
-const PostsPostIdRoute = PostsPostIdRouteImport.update({
-  id: '/$postId',
-  path: '/$postId',
-  getParentRoute: () => PostsRouteRoute,
+const PublicTermsRoute = PublicTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => PublicRoute,
 } as any)
-const PathlessLayoutNestedLayoutRoute =
-  PathlessLayoutNestedLayoutRouteImport.update({
-    id: '/_nested-layout',
-    getParentRoute: () => PathlessLayoutRoute,
-  } as any)
-const PostsPostIdDeepRoute = PostsPostIdDeepRouteImport.update({
-  id: '/posts_/$postId/deep',
-  path: '/posts/$postId/deep',
-  getParentRoute: () => rootRouteImport,
+const PublicSignupRoute = PublicSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => PublicRoute,
 } as any)
-const PathlessLayoutNestedLayoutRouteBRoute =
-  PathlessLayoutNestedLayoutRouteBRouteImport.update({
-    id: '/route-b',
-    path: '/route-b',
-    getParentRoute: () => PathlessLayoutNestedLayoutRoute,
-  } as any)
-const PathlessLayoutNestedLayoutRouteARoute =
-  PathlessLayoutNestedLayoutRouteARouteImport.update({
-    id: '/route-a',
-    path: '/route-a',
-    getParentRoute: () => PathlessLayoutNestedLayoutRoute,
-  } as any)
-const ApiUsersServerRoute = ApiUsersServerRouteImport.update({
-  id: '/api/users',
-  path: '/api/users',
-  getParentRoute: () => rootServerRouteImport,
+const PublicPrivacyRoute = PublicPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicLoginRoute = PublicLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicDemoRoute = PublicDemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicAboutRoute = PublicAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => PublicRoute,
+} as any)
+const AuthedAppLandingRoute = AuthedAppLandingRouteImport.update({
+  id: '/app-landing',
+  path: '/app-landing',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedAppRoute = AuthedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedSubsAddRoute = AuthedSubsAddRouteImport.update({
+  id: '/subs/add',
+  path: '/subs/add',
+  getParentRoute: () => AuthedRoute,
 } as any)
 const ApiUsersIdServerRoute = ApiUsersIdServerRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ApiUsersServerRoute,
+  id: '/api/users/$id',
+  path: '/api/users/$id',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootServerRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/posts': typeof PostsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
-  '/deferred': typeof DeferredRoute
-  '/privacy': typeof PrivacyRoute
-  '/redirect': typeof RedirectRoute
-  '/terms': typeof TermsRoute
-  '/posts/$postId': typeof PostsPostIdRoute
+  '/app': typeof AuthedAppRoute
+  '/app-landing': typeof AuthedAppLandingRoute
+  '/about': typeof PublicAboutRoute
+  '/demo': typeof PublicDemoRoute
+  '/login': typeof PublicLoginRoute
+  '/privacy': typeof PublicPrivacyRoute
+  '/signup': typeof PublicSignupRoute
+  '/terms': typeof PublicTermsRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/posts/': typeof PostsIndexRoute
+  '/': typeof PublicIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
-  '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/subs/add': typeof AuthedSubsAddRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/deferred': typeof DeferredRoute
-  '/privacy': typeof PrivacyRoute
-  '/redirect': typeof RedirectRoute
-  '/terms': typeof TermsRoute
-  '/posts/$postId': typeof PostsPostIdRoute
+  '/app': typeof AuthedAppRoute
+  '/app-landing': typeof AuthedAppLandingRoute
+  '/about': typeof PublicAboutRoute
+  '/demo': typeof PublicDemoRoute
+  '/login': typeof PublicLoginRoute
+  '/privacy': typeof PublicPrivacyRoute
+  '/signup': typeof PublicSignupRoute
+  '/terms': typeof PublicTermsRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/posts': typeof PostsIndexRoute
+  '/': typeof PublicIndexRoute
   '/users': typeof UsersIndexRoute
-  '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
-  '/posts/$postId/deep': typeof PostsPostIdDeepRoute
+  '/subs/add': typeof AuthedSubsAddRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/posts': typeof PostsRouteRouteWithChildren
   '/users': typeof UsersRouteRouteWithChildren
-  '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
-  '/deferred': typeof DeferredRoute
-  '/privacy': typeof PrivacyRoute
-  '/redirect': typeof RedirectRoute
-  '/terms': typeof TermsRoute
-  '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
-  '/posts/$postId': typeof PostsPostIdRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/_public': typeof PublicRouteWithChildren
+  '/_authed/app': typeof AuthedAppRoute
+  '/_authed/app-landing': typeof AuthedAppLandingRoute
+  '/_public/about': typeof PublicAboutRoute
+  '/_public/demo': typeof PublicDemoRoute
+  '/_public/login': typeof PublicLoginRoute
+  '/_public/privacy': typeof PublicPrivacyRoute
+  '/_public/signup': typeof PublicSignupRoute
+  '/_public/terms': typeof PublicTermsRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/posts/': typeof PostsIndexRoute
+  '/_public/': typeof PublicIndexRoute
   '/users/': typeof UsersIndexRoute
-  '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
-  '/_pathlessLayout/_nested-layout/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
-  '/posts_/$postId/deep': typeof PostsPostIdDeepRoute
+  '/_authed/subs/add': typeof AuthedSubsAddRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/posts'
     | '/users'
-    | '/deferred'
+    | '/app'
+    | '/app-landing'
+    | '/about'
+    | '/demo'
+    | '/login'
     | '/privacy'
-    | '/redirect'
+    | '/signup'
     | '/terms'
-    | '/posts/$postId'
     | '/users/$userId'
-    | '/posts/'
+    | '/'
     | '/users/'
-    | '/route-a'
-    | '/route-b'
-    | '/posts/$postId/deep'
+    | '/subs/add'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/deferred'
+    | '/app'
+    | '/app-landing'
+    | '/about'
+    | '/demo'
+    | '/login'
     | '/privacy'
-    | '/redirect'
+    | '/signup'
     | '/terms'
-    | '/posts/$postId'
     | '/users/$userId'
-    | '/posts'
+    | '/'
     | '/users'
-    | '/route-a'
-    | '/route-b'
-    | '/posts/$postId/deep'
+    | '/subs/add'
   id:
     | '__root__'
-    | '/'
-    | '/posts'
     | '/users'
-    | '/_pathlessLayout'
-    | '/deferred'
-    | '/privacy'
-    | '/redirect'
-    | '/terms'
-    | '/_pathlessLayout/_nested-layout'
-    | '/posts/$postId'
+    | '/_authed'
+    | '/_public'
+    | '/_authed/app'
+    | '/_authed/app-landing'
+    | '/_public/about'
+    | '/_public/demo'
+    | '/_public/login'
+    | '/_public/privacy'
+    | '/_public/signup'
+    | '/_public/terms'
     | '/users/$userId'
-    | '/posts/'
+    | '/_public/'
     | '/users/'
-    | '/_pathlessLayout/_nested-layout/route-a'
-    | '/_pathlessLayout/_nested-layout/route-b'
-    | '/posts_/$postId/deep'
+    | '/_authed/subs/add'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  PostsRouteRoute: typeof PostsRouteRouteWithChildren
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
-  PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
-  DeferredRoute: typeof DeferredRoute
-  PrivacyRoute: typeof PrivacyRoute
-  RedirectRoute: typeof RedirectRoute
-  TermsRoute: typeof TermsRoute
-  PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
+  PublicRoute: typeof PublicRouteWithChildren
 }
 export interface FileServerRoutesByFullPath {
-  '/api/users': typeof ApiUsersServerRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/users/$id': typeof ApiUsersIdServerRoute
 }
 export interface FileServerRoutesByTo {
-  '/api/users': typeof ApiUsersServerRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/users/$id': typeof ApiUsersIdServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
-  '/api/users': typeof ApiUsersServerRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/users/$id': typeof ApiUsersIdServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/users' | '/api/users/$id'
+  fullPaths: '/api/auth/$' | '/api/users/$id'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/users' | '/api/users/$id'
-  id: '__root__' | '/api/users' | '/api/users/$id'
+  to: '/api/auth/$' | '/api/users/$id'
+  id: '__root__' | '/api/auth/$' | '/api/users/$id'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
-  ApiUsersServerRoute: typeof ApiUsersServerRouteWithChildren
+  ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
+  ApiUsersIdServerRoute: typeof ApiUsersIdServerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/redirect': {
-      id: '/redirect'
-      path: '/redirect'
-      fullPath: '/redirect'
-      preLoaderRoute: typeof RedirectRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/deferred': {
-      id: '/deferred'
-      path: '/deferred'
-      fullPath: '/deferred'
-      preLoaderRoute: typeof DeferredRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_pathlessLayout': {
-      id: '/_pathlessLayout'
+    '/_public': {
+      id: '/_public'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof PathlessLayoutRouteImport
+      preLoaderRoute: typeof PublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/users': {
@@ -304,20 +265,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/posts': {
-      id: '/posts'
-      path: '/posts'
-      fullPath: '/posts'
-      preLoaderRoute: typeof PostsRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/users/': {
       id: '/users/'
       path: '/'
@@ -325,12 +272,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersIndexRouteImport
       parentRoute: typeof UsersRouteRoute
     }
-    '/posts/': {
-      id: '/posts/'
+    '/_public/': {
+      id: '/_public/'
       path: '/'
-      fullPath: '/posts/'
-      preLoaderRoute: typeof PostsIndexRouteImport
-      parentRoute: typeof PostsRouteRoute
+      fullPath: '/'
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
     }
     '/users/$userId': {
       id: '/users/$userId'
@@ -339,75 +286,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUserIdRouteImport
       parentRoute: typeof UsersRouteRoute
     }
-    '/posts/$postId': {
-      id: '/posts/$postId'
-      path: '/$postId'
-      fullPath: '/posts/$postId'
-      preLoaderRoute: typeof PostsPostIdRouteImport
-      parentRoute: typeof PostsRouteRoute
+    '/_public/terms': {
+      id: '/_public/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof PublicTermsRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/_pathlessLayout/_nested-layout': {
-      id: '/_pathlessLayout/_nested-layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteImport
-      parentRoute: typeof PathlessLayoutRoute
+    '/_public/signup': {
+      id: '/_public/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof PublicSignupRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/posts_/$postId/deep': {
-      id: '/posts_/$postId/deep'
-      path: '/posts/$postId/deep'
-      fullPath: '/posts/$postId/deep'
-      preLoaderRoute: typeof PostsPostIdDeepRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_public/privacy': {
+      id: '/_public/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PublicPrivacyRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/_pathlessLayout/_nested-layout/route-b': {
-      id: '/_pathlessLayout/_nested-layout/route-b'
-      path: '/route-b'
-      fullPath: '/route-b'
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteBRouteImport
-      parentRoute: typeof PathlessLayoutNestedLayoutRoute
+    '/_public/login': {
+      id: '/_public/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof PublicLoginRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/_pathlessLayout/_nested-layout/route-a': {
-      id: '/_pathlessLayout/_nested-layout/route-a'
-      path: '/route-a'
-      fullPath: '/route-a'
-      preLoaderRoute: typeof PathlessLayoutNestedLayoutRouteARouteImport
-      parentRoute: typeof PathlessLayoutNestedLayoutRoute
+    '/_public/demo': {
+      id: '/_public/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof PublicDemoRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/about': {
+      id: '/_public/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof PublicAboutRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_authed/app-landing': {
+      id: '/_authed/app-landing'
+      path: '/app-landing'
+      fullPath: '/app-landing'
+      preLoaderRoute: typeof AuthedAppLandingRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/app': {
+      id: '/_authed/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthedAppRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/subs/add': {
+      id: '/_authed/subs/add'
+      path: '/subs/add'
+      fullPath: '/subs/add'
+      preLoaderRoute: typeof AuthedSubsAddRouteImport
+      parentRoute: typeof AuthedRoute
     }
   }
 }
 declare module '@tanstack/react-start/server' {
   interface ServerFileRoutesByPath {
-    '/api/users': {
-      id: '/api/users'
-      path: '/api/users'
-      fullPath: '/api/users'
-      preLoaderRoute: typeof ApiUsersServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
     '/api/users/$id': {
       id: '/api/users/$id'
-      path: '/$id'
+      path: '/api/users/$id'
       fullPath: '/api/users/$id'
       preLoaderRoute: typeof ApiUsersIdServerRouteImport
-      parentRoute: typeof ApiUsersServerRoute
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
     }
   }
 }
-
-interface PostsRouteRouteChildren {
-  PostsPostIdRoute: typeof PostsPostIdRoute
-  PostsIndexRoute: typeof PostsIndexRoute
-}
-
-const PostsRouteRouteChildren: PostsRouteRouteChildren = {
-  PostsPostIdRoute: PostsPostIdRoute,
-  PostsIndexRoute: PostsIndexRoute,
-}
-
-const PostsRouteRouteWithChildren = PostsRouteRoute._addFileChildren(
-  PostsRouteRouteChildren,
-)
 
 interface UsersRouteRouteChildren {
   UsersUserIdRoute: typeof UsersUserIdRoute
@@ -423,64 +384,55 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
   UsersRouteRouteChildren,
 )
 
-interface PathlessLayoutNestedLayoutRouteChildren {
-  PathlessLayoutNestedLayoutRouteARoute: typeof PathlessLayoutNestedLayoutRouteARoute
-  PathlessLayoutNestedLayoutRouteBRoute: typeof PathlessLayoutNestedLayoutRouteBRoute
+interface AuthedRouteChildren {
+  AuthedAppRoute: typeof AuthedAppRoute
+  AuthedAppLandingRoute: typeof AuthedAppLandingRoute
+  AuthedSubsAddRoute: typeof AuthedSubsAddRoute
 }
 
-const PathlessLayoutNestedLayoutRouteChildren: PathlessLayoutNestedLayoutRouteChildren =
-  {
-    PathlessLayoutNestedLayoutRouteARoute:
-      PathlessLayoutNestedLayoutRouteARoute,
-    PathlessLayoutNestedLayoutRouteBRoute:
-      PathlessLayoutNestedLayoutRouteBRoute,
-  }
-
-const PathlessLayoutNestedLayoutRouteWithChildren =
-  PathlessLayoutNestedLayoutRoute._addFileChildren(
-    PathlessLayoutNestedLayoutRouteChildren,
-  )
-
-interface PathlessLayoutRouteChildren {
-  PathlessLayoutNestedLayoutRoute: typeof PathlessLayoutNestedLayoutRouteWithChildren
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedAppRoute: AuthedAppRoute,
+  AuthedAppLandingRoute: AuthedAppLandingRoute,
+  AuthedSubsAddRoute: AuthedSubsAddRoute,
 }
 
-const PathlessLayoutRouteChildren: PathlessLayoutRouteChildren = {
-  PathlessLayoutNestedLayoutRoute: PathlessLayoutNestedLayoutRouteWithChildren,
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
+interface PublicRouteChildren {
+  PublicAboutRoute: typeof PublicAboutRoute
+  PublicDemoRoute: typeof PublicDemoRoute
+  PublicLoginRoute: typeof PublicLoginRoute
+  PublicPrivacyRoute: typeof PublicPrivacyRoute
+  PublicSignupRoute: typeof PublicSignupRoute
+  PublicTermsRoute: typeof PublicTermsRoute
+  PublicIndexRoute: typeof PublicIndexRoute
 }
 
-const PathlessLayoutRouteWithChildren = PathlessLayoutRoute._addFileChildren(
-  PathlessLayoutRouteChildren,
-)
-
-interface ApiUsersServerRouteChildren {
-  ApiUsersIdServerRoute: typeof ApiUsersIdServerRoute
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicAboutRoute: PublicAboutRoute,
+  PublicDemoRoute: PublicDemoRoute,
+  PublicLoginRoute: PublicLoginRoute,
+  PublicPrivacyRoute: PublicPrivacyRoute,
+  PublicSignupRoute: PublicSignupRoute,
+  PublicTermsRoute: PublicTermsRoute,
+  PublicIndexRoute: PublicIndexRoute,
 }
 
-const ApiUsersServerRouteChildren: ApiUsersServerRouteChildren = {
-  ApiUsersIdServerRoute: ApiUsersIdServerRoute,
-}
-
-const ApiUsersServerRouteWithChildren = ApiUsersServerRoute._addFileChildren(
-  ApiUsersServerRouteChildren,
-)
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  PostsRouteRoute: PostsRouteRouteWithChildren,
   UsersRouteRoute: UsersRouteRouteWithChildren,
-  PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
-  DeferredRoute: DeferredRoute,
-  PrivacyRoute: PrivacyRoute,
-  RedirectRoute: RedirectRoute,
-  TermsRoute: TermsRoute,
-  PostsPostIdDeepRoute: PostsPostIdDeepRoute,
+  AuthedRoute: AuthedRouteWithChildren,
+  PublicRoute: PublicRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiUsersServerRoute: ApiUsersServerRouteWithChildren,
+  ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
+  ApiUsersIdServerRoute: ApiUsersIdServerRoute,
 }
 export const serverRouteTree = rootServerRouteImport
   ._addFileChildren(rootServerRouteChildren)

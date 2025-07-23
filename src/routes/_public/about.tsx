@@ -8,7 +8,6 @@ import {
   FileText,
   Lock,
   Mail,
-  Menu,
   PieChart,
   Plus,
   PlusCircle,
@@ -19,14 +18,13 @@ import {
   Trash2,
   TrendingUp,
   Upload,
-  X,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Header } from '~/components/Header'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/_public/about')({
   component: Home,
 })
 
@@ -158,6 +156,7 @@ function Home() {
 
   return (
     <>
+      <Header />
       <main>
         <section className="relative overflow-hidden py-20 lg:py-32">
           {/* Background decoration */}
