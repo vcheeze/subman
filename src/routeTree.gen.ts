@@ -26,6 +26,8 @@ import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as AuthedAppLandingRouteImport } from './routes/_authed/app-landing'
 import { Route as AuthedAppRouteImport } from './routes/_authed/app'
 import { Route as AuthedSubsAddRouteImport } from './routes/_authed/subs.add'
+import { ServerRoute as ApiPortalServerRouteImport } from './routes/api/portal'
+import { ServerRoute as ApiCheckoutServerRouteImport } from './routes/api/checkout'
 import { ServerRoute as ApiUsersIdServerRouteImport } from './routes/api/users.$id'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth.$'
 
@@ -103,6 +105,16 @@ const AuthedSubsAddRoute = AuthedSubsAddRouteImport.update({
   id: '/subs/add',
   path: '/subs/add',
   getParentRoute: () => AuthedRoute,
+} as any)
+const ApiPortalServerRoute = ApiPortalServerRouteImport.update({
+  id: '/api/portal',
+  path: '/api/portal',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
+const ApiCheckoutServerRoute = ApiCheckoutServerRouteImport.update({
+  id: '/api/checkout',
+  path: '/api/checkout',
+  getParentRoute: () => rootServerRouteImport,
 } as any)
 const ApiUsersIdServerRoute = ApiUsersIdServerRouteImport.update({
   id: '/api/users/$id',
@@ -217,27 +229,40 @@ export interface RootRouteChildren {
   PublicRoute: typeof PublicRouteWithChildren
 }
 export interface FileServerRoutesByFullPath {
+  '/api/checkout': typeof ApiCheckoutServerRoute
+  '/api/portal': typeof ApiPortalServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/users/$id': typeof ApiUsersIdServerRoute
 }
 export interface FileServerRoutesByTo {
+  '/api/checkout': typeof ApiCheckoutServerRoute
+  '/api/portal': typeof ApiPortalServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/users/$id': typeof ApiUsersIdServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
+  '/api/checkout': typeof ApiCheckoutServerRoute
+  '/api/portal': typeof ApiPortalServerRoute
   '/api/auth/$': typeof ApiAuthSplatServerRoute
   '/api/users/$id': typeof ApiUsersIdServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/auth/$' | '/api/users/$id'
+  fullPaths: '/api/checkout' | '/api/portal' | '/api/auth/$' | '/api/users/$id'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/auth/$' | '/api/users/$id'
-  id: '__root__' | '/api/auth/$' | '/api/users/$id'
+  to: '/api/checkout' | '/api/portal' | '/api/auth/$' | '/api/users/$id'
+  id:
+    | '__root__'
+    | '/api/checkout'
+    | '/api/portal'
+    | '/api/auth/$'
+    | '/api/users/$id'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
+  ApiCheckoutServerRoute: typeof ApiCheckoutServerRoute
+  ApiPortalServerRoute: typeof ApiPortalServerRoute
   ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
   ApiUsersIdServerRoute: typeof ApiUsersIdServerRoute
 }
@@ -353,6 +378,20 @@ declare module '@tanstack/react-router' {
 }
 declare module '@tanstack/react-start/server' {
   interface ServerFileRoutesByPath {
+    '/api/portal': {
+      id: '/api/portal'
+      path: '/api/portal'
+      fullPath: '/api/portal'
+      preLoaderRoute: typeof ApiPortalServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/checkout': {
+      id: '/api/checkout'
+      path: '/api/checkout'
+      fullPath: '/api/checkout'
+      preLoaderRoute: typeof ApiCheckoutServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
     '/api/users/$id': {
       id: '/api/users/$id'
       path: '/api/users/$id'
@@ -431,6 +470,8 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiCheckoutServerRoute: ApiCheckoutServerRoute,
+  ApiPortalServerRoute: ApiPortalServerRoute,
   ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
   ApiUsersIdServerRoute: ApiUsersIdServerRoute,
 }

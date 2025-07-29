@@ -15,6 +15,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   ssr: {
-    noExternal: ['@clerk/tanstack-react-start', '@mobily/ts-belt'],
+    noExternal: ['@mobily/ts-belt'],
   },
 })

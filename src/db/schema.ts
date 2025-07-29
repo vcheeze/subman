@@ -17,6 +17,7 @@ export const user = pgTable('user', {
   emailVerified: boolean('email_verified')
     .$defaultFn(() => false)
     .notNull(),
+  polarCustomerId: uuid('polar_customer_id'),
   image: text('image'),
   createdAt: timestamp('created_at')
     .$defaultFn(() => /* @__PURE__ */ new Date())
@@ -70,6 +71,17 @@ export const verification = pgTable('verification', {
   ),
 })
 
+export const payment = pgTable('payment', {
+  id: uuid('id').primaryKey(),
+  user_id: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
+  polarPaymentId: uuid('polar_payment_id').unique().notNull(),
+  amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
+  currency: text('currency').default('USD'),
+  createdAt: timestamp('created_at').$defaultFn(
+    () => /* @__PURE__ */ new Date(),
+  ),
+})
+
 export const category = pgTable('category', {
   id: serial('id').primaryKey(),
   name: text('name').notNull().unique(),
@@ -81,6 +93,11 @@ export const subscription = pgTable('subscription', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
   name: text('name').notNull(),
+  canonicalServiceId: uuid('canonical_service_id').references(
+    () => service.id,
+    { onDelete: 'cascade' },
+  ),
+  rating: integer('rating').notNull(),
   amount: numeric('amount', { precision: 10, scale: 2 }),
   currency: text('currency').default('USD'),
   billingCycle: text('billing_cycle', {
@@ -94,8 +111,18 @@ export const subscription = pgTable('subscription', {
   updatedAt: timestamp('updated_at').defaultNow(),
 })
 
+export const service = pgTable('service', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  canonicalName: text('canonical_name').unique().notNull(),
+  categoryId: integer('category_id').references(() => category.id),
+  websiteUrl: text('website_url'),
+  logoUrl: text('logo_url'),
+})
+
 export type User = typeof user.$inferSelect
 
 export type Category = typeof category.$inferSelect
 
 export type Subscription = typeof subscription.$inferSelect
+
+export type Service = typeof service.$inferSelect

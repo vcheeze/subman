@@ -27,7 +27,8 @@ export const Route = createRootRouteWithContext<{
     email: string
     createdAt: Date
     updatedAt: Date
-    image?: string | null | undefined | undefined
+    image?: string | null | undefined
+    customerId?: string
   }
 }>()({
   beforeLoad: async () => {
@@ -44,10 +45,8 @@ export const Route = createRootRouteWithContext<{
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title:
-          'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description:
-          'TanStack Start is a type-safe, client-first, full-stack React framework. ',
+        title: 'Subman | Know the True Value of Your Subscriptions',
+        description: 'Maximizing value, not just minimizing cost.',
       }),
     ],
     links: [
