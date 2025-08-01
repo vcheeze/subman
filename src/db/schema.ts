@@ -98,7 +98,7 @@ export const subscription = pgTable('subscription', {
     { onDelete: 'cascade' },
   ),
   rating: integer('rating').notNull(),
-  amount: numeric('amount', { precision: 10, scale: 2 }),
+  amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
   currency: text('currency').default('USD'),
   billingCycle: text('billing_cycle', {
     enum: ['weekly', 'monthly', 'quarterly', 'yearly'],

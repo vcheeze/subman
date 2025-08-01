@@ -59,10 +59,10 @@ const subscriptionSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   amount: z.string().min(1, 'Amount is required'),
   currency: z.string().min(1, 'Currency is required').default('AED'),
-  billingCycle: z.enum(['weekly', 'monthly', 'quarterly', 'yearly']),
-  startDate: z.date({
-    required_error: 'Start date is required',
-  }),
+  // rating: z.number().min(1).max(5),
+  rating: z.coerce.number().min(1).max(5),
+  billingCycle: z.enum(['weekly', 'monthly', 'quarterly', 'yearly']).optional(),
+  startDate: z.date().optional(),
   categoryId: z.string().optional(),
   notes: z.string().optional(),
 })
@@ -140,7 +140,7 @@ function RouteComponent() {
   const onSubmit = async (values: SubscriptionFormData) => {
     try {
       await addSubscription({ data: values })
-      navigate({ to: '/dashboard' })
+      navigate({ to: '/app' })
     } catch {
       toast.error('Something went wrong', {
         description: `${values.name} couldn't be added. Please try again.`,
@@ -156,7 +156,7 @@ function RouteComponent() {
           <Button asChild variant="link">
             <Link
               className="flex items-center gap-2 transition-colors hover:text-foreground"
-              to="/dashboard"
+              to="/app"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
@@ -167,7 +167,7 @@ function RouteComponent() {
 
       <div className="container mx-auto max-w-4xl px-6 py-8">
         <div className="mb-8">
-          <h1 className="mb-2 font-bold font-serif text-3xl text-foreground">
+          <h1 className="mb-2 font-bold text-3xl text-foreground">
             Add New Subscription
           </h1>
           <p className="text-muted-foreground">
@@ -179,7 +179,7 @@ function RouteComponent() {
           {/* Quick Templates */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle className="font-serif text-xl">Popular Subs</CardTitle>
+              <CardTitle className="text-xl">Popular Subs</CardTitle>
               <CardDescription>Quick-add common subscriptions</CardDescription>
             </CardHeader>
             <CardContent>
@@ -216,7 +216,7 @@ function RouteComponent() {
           {/* Form */}
           <Card className="shadow-card">
             <CardHeader>
-              <CardTitle className="font-serif text-xl">Sub Details</CardTitle>
+              <CardTitle className="text-xl">Sub Details</CardTitle>
               <CardDescription>
                 Fill in the details for your subscription
               </CardDescription>
@@ -297,6 +297,27 @@ function RouteComponent() {
                   </div>
 
                   <FormField
+                    control={form.control}
+                    name="rating"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Rating</FormLabel>
+                        <FormControl>
+                          <Input
+                            max="5"
+                            min="1"
+                            placeholder="1-5"
+                            step="1"
+                            type="number"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* <FormField
                     control={form.control}
                     name="billingCycle"
                     render={({ field }) => (
@@ -399,7 +420,7 @@ function RouteComponent() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
 
                   <FormField
                     control={form.control}
@@ -418,10 +439,14 @@ function RouteComponent() {
                       </FormItem>
                     )}
                   />
-
-                  <Button className="w-full" type="submit">
-                    Add Subscription
-                  </Button>
+                  <div className="flex gap-2 max-sm:flex-col">
+                    <Button asChild variant="outline">
+                      <Link to="/app">Cancel</Link>
+                    </Button>
+                    <Button className="w-full" type="submit">
+                      Add Subscription
+                    </Button>
+                  </div>
                 </form>
               </Form>
             </CardContent>

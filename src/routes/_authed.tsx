@@ -4,7 +4,7 @@ export const Route = createFileRoute('/_authed')({
   beforeLoad: ({ context, location }) => {
     if (!context.user) {
       throw redirect({
-        to: '/login',
+        to: '/signin',
         search: { redirect: location.pathname + location.search },
       })
     }
@@ -13,5 +13,9 @@ export const Route = createFileRoute('/_authed')({
 })
 
 function Authed() {
-  return <Outlet />
+  return (
+    <div className="font-mono">
+      <Outlet />
+    </div>
+  )
 }

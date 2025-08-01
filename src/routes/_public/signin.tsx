@@ -1,10 +1,10 @@
-// routes/login.tsx
 import {
   createFileRoute,
   Link,
   redirect,
   useRouter,
 } from '@tanstack/react-router'
+import { updateSession } from '@tanstack/react-start/server'
 import { AlertCircle, Eye, EyeClosed } from 'lucide-react'
 import { useState } from 'react'
 
@@ -16,7 +16,7 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { authClient } from '~/utils/auth-client'
 
-export const Route = createFileRoute('/_public/login')({
+export const Route = createFileRoute('/_public/signin')({
   validateSearch: (search) => ({
     redirect: (search.redirect as string) || '/app',
   }),
@@ -62,10 +62,17 @@ function RouteComponent() {
         />
       </svg> */}
       <img alt="Subman logo" className="mb-2 size-16" src="/logo_light.svg" />
-      <h1 className="mb-2 font-serif text-2xl">Welcome to Subman</h1>
+      <h1 className="mb-2 font-serif text-2xl lg:text-3xl">
+        Welcome to Subman
+      </h1>
       <p className="mb-6 text-muted-foreground text-sm">
         Don't have an account?&nbsp;
-        <Link className="underline" search={{ redirect }} to="/signup">
+        <Link
+          className="underline"
+          search={{ redirect }}
+          to="/signup"
+          viewTransition
+        >
           Sign up
         </Link>
       </p>
@@ -90,6 +97,15 @@ function RouteComponent() {
                   'Something weng wrong while signing you in. Please try again.',
               )
             }
+            // if (data?.user) {
+            //   await updateSession(
+            //     {
+            //       password: process.env.SESSION_SECRET,
+            //       name: 'app-session',
+            //     },
+            //     { user: data.user },
+            //   )
+            // }
           } catch (error) {
             console.error(error)
           }

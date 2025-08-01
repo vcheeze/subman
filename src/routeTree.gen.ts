@@ -14,13 +14,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as UsersRouteRouteImport } from './routes/users.route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
-import { Route as PublicIndexRouteImport } from './routes/_public/index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
 import { Route as PublicTermsRouteImport } from './routes/_public/terms'
 import { Route as PublicSignupRouteImport } from './routes/_public/signup'
+import { Route as PublicSigninRouteImport } from './routes/_public/signin'
 import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
-import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicDemoRouteImport } from './routes/_public/demo'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as AuthedAppLandingRouteImport } from './routes/_authed/app-landing'
@@ -46,15 +46,15 @@ const UsersRouteRoute = UsersRouteRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UsersIndexRoute = UsersIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => UsersRouteRoute,
-} as any)
-const PublicIndexRoute = PublicIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PublicRoute,
 } as any)
 const UsersUserIdRoute = UsersUserIdRouteImport.update({
   id: '/$userId',
@@ -71,14 +71,14 @@ const PublicSignupRoute = PublicSignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => PublicRoute,
 } as any)
+const PublicSigninRoute = PublicSigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => PublicRoute,
+} as any)
 const PublicPrivacyRoute = PublicPrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicLoginRoute = PublicLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => PublicRoute,
 } as any)
 const PublicDemoRoute = PublicDemoRouteImport.update({
@@ -128,36 +128,37 @@ const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/users': typeof UsersRouteRouteWithChildren
   '/app': typeof AuthedAppRoute
   '/app-landing': typeof AuthedAppLandingRoute
   '/about': typeof PublicAboutRoute
   '/demo': typeof PublicDemoRoute
-  '/login': typeof PublicLoginRoute
   '/privacy': typeof PublicPrivacyRoute
+  '/signin': typeof PublicSigninRoute
   '/signup': typeof PublicSignupRoute
   '/terms': typeof PublicTermsRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/': typeof PublicIndexRoute
   '/users/': typeof UsersIndexRoute
   '/subs/add': typeof AuthedSubsAddRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/app': typeof AuthedAppRoute
   '/app-landing': typeof AuthedAppLandingRoute
   '/about': typeof PublicAboutRoute
   '/demo': typeof PublicDemoRoute
-  '/login': typeof PublicLoginRoute
   '/privacy': typeof PublicPrivacyRoute
+  '/signin': typeof PublicSigninRoute
   '/signup': typeof PublicSignupRoute
   '/terms': typeof PublicTermsRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/': typeof PublicIndexRoute
   '/users': typeof UsersIndexRoute
   '/subs/add': typeof AuthedSubsAddRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/users': typeof UsersRouteRouteWithChildren
   '/_authed': typeof AuthedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
@@ -165,47 +166,47 @@ export interface FileRoutesById {
   '/_authed/app-landing': typeof AuthedAppLandingRoute
   '/_public/about': typeof PublicAboutRoute
   '/_public/demo': typeof PublicDemoRoute
-  '/_public/login': typeof PublicLoginRoute
   '/_public/privacy': typeof PublicPrivacyRoute
+  '/_public/signin': typeof PublicSigninRoute
   '/_public/signup': typeof PublicSignupRoute
   '/_public/terms': typeof PublicTermsRoute
   '/users/$userId': typeof UsersUserIdRoute
-  '/_public/': typeof PublicIndexRoute
   '/users/': typeof UsersIndexRoute
   '/_authed/subs/add': typeof AuthedSubsAddRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/users'
     | '/app'
     | '/app-landing'
     | '/about'
     | '/demo'
-    | '/login'
     | '/privacy'
+    | '/signin'
     | '/signup'
     | '/terms'
     | '/users/$userId'
-    | '/'
     | '/users/'
     | '/subs/add'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/app'
     | '/app-landing'
     | '/about'
     | '/demo'
-    | '/login'
     | '/privacy'
+    | '/signin'
     | '/signup'
     | '/terms'
     | '/users/$userId'
-    | '/'
     | '/users'
     | '/subs/add'
   id:
     | '__root__'
+    | '/'
     | '/users'
     | '/_authed'
     | '/_public'
@@ -213,17 +214,17 @@ export interface FileRouteTypes {
     | '/_authed/app-landing'
     | '/_public/about'
     | '/_public/demo'
-    | '/_public/login'
     | '/_public/privacy'
+    | '/_public/signin'
     | '/_public/signup'
     | '/_public/terms'
     | '/users/$userId'
-    | '/_public/'
     | '/users/'
     | '/_authed/subs/add'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
   AuthedRoute: typeof AuthedRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
@@ -290,19 +291,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/users/': {
       id: '/users/'
       path: '/'
       fullPath: '/users/'
       preLoaderRoute: typeof UsersIndexRouteImport
       parentRoute: typeof UsersRouteRoute
-    }
-    '/_public/': {
-      id: '/_public/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof PublicIndexRouteImport
-      parentRoute: typeof PublicRoute
     }
     '/users/$userId': {
       id: '/users/$userId'
@@ -325,18 +326,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSignupRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_public/signin': {
+      id: '/_public/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof PublicSigninRouteImport
+      parentRoute: typeof PublicRoute
+    }
     '/_public/privacy': {
       id: '/_public/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PublicPrivacyRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/login': {
-      id: '/_public/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof PublicLoginRouteImport
       parentRoute: typeof PublicRoute
     }
     '/_public/demo': {
@@ -441,27 +442,26 @@ const AuthedRouteWithChildren =
 interface PublicRouteChildren {
   PublicAboutRoute: typeof PublicAboutRoute
   PublicDemoRoute: typeof PublicDemoRoute
-  PublicLoginRoute: typeof PublicLoginRoute
   PublicPrivacyRoute: typeof PublicPrivacyRoute
+  PublicSigninRoute: typeof PublicSigninRoute
   PublicSignupRoute: typeof PublicSignupRoute
   PublicTermsRoute: typeof PublicTermsRoute
-  PublicIndexRoute: typeof PublicIndexRoute
 }
 
 const PublicRouteChildren: PublicRouteChildren = {
   PublicAboutRoute: PublicAboutRoute,
   PublicDemoRoute: PublicDemoRoute,
-  PublicLoginRoute: PublicLoginRoute,
   PublicPrivacyRoute: PublicPrivacyRoute,
+  PublicSigninRoute: PublicSigninRoute,
   PublicSignupRoute: PublicSignupRoute,
   PublicTermsRoute: PublicTermsRoute,
-  PublicIndexRoute: PublicIndexRoute,
 }
 
 const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   UsersRouteRoute: UsersRouteRouteWithChildren,
   AuthedRoute: AuthedRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,

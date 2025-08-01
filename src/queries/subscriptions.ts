@@ -37,7 +37,7 @@ export const addSubscription = createServerFn({ method: 'POST' })
       : null
     const sub = await db.insert(subscription).values({
       ...data,
-      startDate: data.startDate.toISOString(),
+      ...(data.startDate && { startDate: data.startDate.toISOString() }),
       categoryId,
     })
 

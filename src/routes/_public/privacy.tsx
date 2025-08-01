@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   ArrowLeft,
-  Calendar,
   Eye,
   FileText,
   Lock,
@@ -19,7 +18,7 @@ export const Route = createFileRoute('/_public/privacy')({
 
 function Privacy() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/20 dark:from-slate-950 dark:via-blue-900/30 dark:to-emerald-900/20">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-border/40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
@@ -48,7 +47,7 @@ function Privacy() {
         </div>
       </header>
 
-      <main className="container mx-auto max-w-4xl px-4 py-12">
+      <main className="container mx-auto max-w-4xl px-4 py-12 font-serif text-lg">
         {/* Hero Section */}
         <div className="mb-12 text-center">
           <div className="mb-6 inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 font-medium text-emerald-700 text-sm">

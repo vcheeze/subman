@@ -12,7 +12,7 @@ import {
 import { Input } from '~/components/ui/input'
 import { ScrollArea } from '~/components/ui/scroll-area'
 
-export const Route = createFileRoute('/_public/')({
+export const Route = createFileRoute('/')({
   component: Home,
 })
 
