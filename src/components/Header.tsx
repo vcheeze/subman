@@ -93,7 +93,6 @@ export function Header() {
                   try {
                     const formData = new FormData(event.currentTarget)
                     const jsonData = Object.fromEntries(formData.entries())
-                    console.log('jsonData :>> ', jsonData)
                     await authClient.signUp.email(jsonData)
                   } catch (ex) {}
                 }}

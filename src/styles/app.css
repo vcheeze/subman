@@ -66,6 +66,20 @@ Cosmic Odyssey   0.2248 0.0635 267.96
     --shadow-2xl: 0px 4px 8px -1px hsl(0 0% 0% / 0.25);
     --tracking-normal: 0em;
     --spacing: 0.25rem;
+
+    /* radix orange */
+    --orange-1: oklch(0.9923 0.0025 48.72);
+    --orange-2: oklch(0.9796 0.0158 73.68);
+    --orange-3: oklch(0.9583 0.0371 79.11);
+    --orange-4: oklch(0.92 0.0651 74.37);
+    --orange-5: oklch(0.8879 0.0875 71.31);
+    --orange-6: oklch(0.8537 0.1068 66.02);
+    --orange-7: oklch(0.8059 0.1123 59.96);
+    --orange-8: oklch(0.745 0.1322 54.68);
+    --orange-9: oklch(0.6908 0.1909 45.02);
+    --orange-10: oklch(0.6624 0.194559 43.4582);
+    --orange-11: oklch(0.5855 0.174261 42.7357);
+    --orange-12: oklch(0.3499 0.0685 40.83);
   }
 
   .dark {
@@ -96,7 +110,6 @@ Cosmic Odyssey   0.2248 0.0635 267.96
     --sidebar-accent-foreground: oklch(0.7888 0.1434 56.2128);
     --sidebar-border: oklch(0.3484 0.0053 91.5372);
     --sidebar-ring: oklch(0.5406 0.1156 50.0465);
-    --radius: 0.65rem;
     --shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
     --shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
     --shadow-sm:
@@ -110,6 +123,20 @@ Cosmic Odyssey   0.2248 0.0635 267.96
     --shadow-xl:
       0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 8px 10px -2px hsl(0 0% 0% / 0.1);
     --shadow-2xl: 0px 4px 8px -1px hsl(0 0% 0% / 0.25);
+
+    /* radix orange */
+    --orange-1: oklch(0.1869 0.0114 60.68);
+    --orange-2: oklch(0.2078 0.0185 62.72);
+    --orange-3: oklch(0.2579 0.0447 60.79);
+    --orange-4: oklch(0.2937 0.0713 56.7);
+    --orange-5: oklch(0.3339 0.0833 54.38);
+    --orange-6: oklch(0.3849 0.0867 54.98);
+    --orange-7: oklch(0.4523 0.0945 52.66);
+    --orange-8: oklch(0.5406 0.1156 50.05);
+    --orange-9: oklch(0.6908 0.1909 45.02);
+    --orange-10: oklch(0.7327 0.1818 50.86);
+    --orange-11: oklch(0.7888 0.143364 56.2128);
+    --orange-12: oklch(0.9247 0.0524 66.17);
   }
 
   @theme inline {
@@ -163,6 +190,20 @@ Cosmic Odyssey   0.2248 0.0635 267.96
     --shadow-lg: var(--shadow-lg);
     --shadow-xl: var(--shadow-xl);
     --shadow-2xl: var(--shadow-2xl);
+
+    /* radix orange */
+    --color-orange-1: var(--orange-1);
+    --color-orange-2: var(--orange-2);
+    --color-orange-3: var(--orange-3);
+    --color-orange-4: var(--orange-4);
+    --color-orange-5: var(--orange-5);
+    --color-orange-6: var(--orange-6);
+    --color-orange-7: var(--orange-7);
+    --color-orange-8: var(--orange-8);
+    --color-orange-9: var(--orange-9);
+    --color-orange-10: var(--orange-10);
+    --color-orange-11: var(--orange-11);
+    --color-orange2-1: var(--orange-12);
   }
 }
 

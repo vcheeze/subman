@@ -13,6 +13,7 @@ import type * as React from 'react'
 // import { Toaster } from 'react-hot-toast'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
+import { ThemeProvider } from '~/components/theme-provider'
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { getSession } from '~/server/get-session'
 import appCss from '~/styles/app.css?url'
@@ -98,7 +99,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <ScrollArea className="h-screen">{children}</ScrollArea>
+        <ThemeProvider defaultTheme="light">
+          <ScrollArea className="h-screen">{children}</ScrollArea>
+        </ThemeProvider>
         {/* <Toaster /> */}
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <TanStackRouterDevtools position="bottom-right" />

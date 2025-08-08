@@ -41,21 +41,21 @@ function Home() {
   ]
 
   return (
-    <ScrollArea className="h-screen" type="scroll">
+    <>
       <section className="px-2 pb-2 lg:px-4 lg:pb-4">
-        <nav className="container mx-auto flex max-w-6xl items-center justify-center gap-2 py-4 lg:py-6">
+        <nav className="container mx-auto flex max-w-7xl items-center justify-center gap-2 py-4 lg:py-6">
           <img alt="logo" className="h-6" src="/logo_light.svg" />
           <div className="font-serif text-2xl">Subman</div>
         </nav>
         <motion.div
           animate={{ opacity: 1, transition: { type: 'spring' } }}
-          className="flex h-[75vh] flex-col items-center justify-center rounded-md bg-muted p-4 text-center lg:p-8"
+          className="container mx-auto flex h-[75vh] max-w-7xl flex-col items-center justify-center rounded-2xl bg-muted p-4 text-center lg:p-8"
           initial={{ opacity: 0 }}
         >
-          <h1 className="mb-8 font-semibold font-serif text-3xl lg:text-6xl">
+          <h1 className="mb-8 font-semibold font-serif text-4xl lg:text-8xl">
             Know the True Value of Your Subscriptions
           </h1>
-          <p className="mb-8 text-lg text-muted-foreground leading-8">
+          <p className="mb-8 text-muted-foreground leading-8 lg:text-lg">
             You don't need another budgeting app. You need to know what's worth
             your budget.
           </p>
@@ -68,8 +68,8 @@ function Home() {
           </p>
         </motion.div>
       </section>
-      <section className="container mx-auto max-w-6xl p-10 lg:p-16">
-        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-5xl">
+      <section className="container mx-auto max-w-7xl p-10 lg:p-16">
+        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
           You're Probably Paying for Things You Don't Use — or Don't Even Want
         </h2>
         <div className="mb-16 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -85,7 +85,7 @@ function Home() {
         </div>
         {/* <p className="leading-7">It all adds up.</p> */}
         {/* <p className="leading-7">But price isn't the problem. It's value.</p> */}
-        <p className="leading-7">
+        <p className="mb-2 leading-7">
           We've all said,{' '}
           <span className="italic">“Eh, it's just $15.99.”</span>
         </p>
@@ -94,17 +94,17 @@ function Home() {
           or utility.
         </p>
       </section>
-      <section className="container mx-auto max-w-6xl p-10 lg:p-16">
-        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-5xl">
+      <section className="container mx-auto max-w-7xl p-10 lg:p-16">
+        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
           Subman Helps You Cut Through the Noise
         </h2>
-        <p className="leading-7">It's not about spending less —</p>
+        <p className="mb-2 leading-7">It's not about spending less.</p>
         <p className="font-semibold leading-7">
           It's about spending with intention.
         </p>
       </section>
-      <section className="container mx-auto max-w-6xl p-10 lg:p-16">
-        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-5xl">
+      <section className="container mx-auto max-w-7xl p-10 lg:p-16">
+        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
           Built for those who care where their money — and data — goes.
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3">
@@ -122,8 +122,8 @@ function Home() {
           </div>
         </div>
       </section>
-      <section className="container mx-auto max-w-6xl p-10 lg:p-16">
-        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-5xl">
+      <section className="container mx-auto max-w-7xl p-10 lg:p-16">
+        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
           Reflect Before You Renew.
         </h2>
         <p className="leading-7">Subman is launching soon.</p>
@@ -142,6 +142,6 @@ function Home() {
           pay for.
         </h3>
       </footer>
-    </ScrollArea>
+    </>
   )
 }

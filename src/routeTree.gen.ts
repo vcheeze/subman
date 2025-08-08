@@ -23,6 +23,7 @@ import { Route as PublicSigninRouteImport } from './routes/_public/signin'
 import { Route as PublicPrivacyRouteImport } from './routes/_public/privacy'
 import { Route as PublicDemoRouteImport } from './routes/_public/demo'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
+import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
 import { Route as AuthedAppLandingRouteImport } from './routes/_authed/app-landing'
 import { Route as AuthedAppRouteImport } from './routes/_authed/app'
 import { Route as AuthedSubsAddRouteImport } from './routes/_authed/subs.add'
@@ -91,6 +92,11 @@ const PublicAboutRoute = PublicAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => PublicRoute,
 } as any)
+const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedAppLandingRoute = AuthedAppLandingRouteImport.update({
   id: '/app-landing',
   path: '/app-landing',
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRouteRouteWithChildren
   '/app': typeof AuthedAppRoute
   '/app-landing': typeof AuthedAppLandingRoute
+  '/settings': typeof AuthedSettingsRoute
   '/about': typeof PublicAboutRoute
   '/demo': typeof PublicDemoRoute
   '/privacy': typeof PublicPrivacyRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AuthedAppRoute
   '/app-landing': typeof AuthedAppLandingRoute
+  '/settings': typeof AuthedSettingsRoute
   '/about': typeof PublicAboutRoute
   '/demo': typeof PublicDemoRoute
   '/privacy': typeof PublicPrivacyRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/_public': typeof PublicRouteWithChildren
   '/_authed/app': typeof AuthedAppRoute
   '/_authed/app-landing': typeof AuthedAppLandingRoute
+  '/_authed/settings': typeof AuthedSettingsRoute
   '/_public/about': typeof PublicAboutRoute
   '/_public/demo': typeof PublicDemoRoute
   '/_public/privacy': typeof PublicPrivacyRoute
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/app'
     | '/app-landing'
+    | '/settings'
     | '/about'
     | '/demo'
     | '/privacy'
@@ -195,6 +205,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app-landing'
+    | '/settings'
     | '/about'
     | '/demo'
     | '/privacy'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/_public'
     | '/_authed/app'
     | '/_authed/app-landing'
+    | '/_authed/settings'
     | '/_public/about'
     | '/_public/demo'
     | '/_public/privacy'
@@ -354,6 +366,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAboutRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_authed/settings': {
+      id: '/_authed/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthedSettingsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/app-landing': {
       id: '/_authed/app-landing'
       path: '/app-landing'
@@ -427,12 +446,14 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
 interface AuthedRouteChildren {
   AuthedAppRoute: typeof AuthedAppRoute
   AuthedAppLandingRoute: typeof AuthedAppLandingRoute
+  AuthedSettingsRoute: typeof AuthedSettingsRoute
   AuthedSubsAddRoute: typeof AuthedSubsAddRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAppRoute: AuthedAppRoute,
   AuthedAppLandingRoute: AuthedAppLandingRoute,
+  AuthedSettingsRoute: AuthedSettingsRoute,
   AuthedSubsAddRoute: AuthedSubsAddRoute,
 }
 

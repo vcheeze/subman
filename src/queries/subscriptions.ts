@@ -29,22 +29,17 @@ export const subscriptionsQueryOptions = (userId: string) =>
   })
 
 export const addSubscription = createServerFn({ method: 'POST' })
-  .validator((d: SubscriptionFormData) => d)
+  .validator((d: SubscriptionFormData & { userId: string }) => d)
   .handler(async ({ data }) => {
     console.info('Adding subscription...')
-    const categoryId = data.categoryId
-      ? Number.parseInt(data.categoryId, 10)
-      : null
-    const sub = await db.insert(subscription).values({
-      ...data,
-      ...(data.startDate && { startDate: data.startDate.toISOString() }),
-      categoryId,
-    })
+    const sub = await db.insert(subscription).values(data)
 
     return sub
   })
 
-export const addSubscriptionMutationOptions = (data: SubscriptionFormData) => ({
+export const addSubscriptionMutationOptions = (
+  data: SubscriptionFormData & { userId: string },
+) => ({
   mutationKey: ['addSubscription'],
   mutationFn: () => addSubscription({ data }),
 })
