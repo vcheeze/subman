@@ -24,7 +24,7 @@ import { Header } from '~/components/Header'
 import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
-export const Route = createFileRoute('/_public/about')({
+export const Route = createFileRoute('/about')({
   component: Home,
 })
 

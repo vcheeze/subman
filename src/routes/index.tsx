@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Droplet, EyeClosed, Shield } from 'lucide-react'
 import { motion } from 'motion/react'
 
@@ -9,8 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from '~/components/ui/card'
-import { Input } from '~/components/ui/input'
-import { ScrollArea } from '~/components/ui/scroll-area'
 
 export const Route = createFileRoute('/')({
   component: Home,
@@ -42,7 +40,7 @@ function Home() {
 
   return (
     <>
-      <section className="px-2 pb-2 lg:px-4 lg:pb-4">
+      <section className="px-2 pb-2 font-mono lg:px-4 lg:pb-4">
         <nav className="container mx-auto flex max-w-7xl items-center justify-center gap-2 py-4 lg:py-6">
           <img alt="logo" className="h-6" src="/logo_light.svg" />
           <div className="font-serif text-2xl">Subman</div>
@@ -53,21 +51,28 @@ function Home() {
           initial={{ opacity: 0 }}
         >
           <h1 className="mb-8 font-semibold font-serif text-4xl lg:text-8xl">
-            Know the True Value of Your Subscriptions
+            Simplicity and Clarity for Your Subscriptions
           </h1>
           <p className="mb-8 text-muted-foreground leading-8 lg:text-lg">
             You don't need another budgeting app. You need to know what's worth
             your budget.
           </p>
-          <div className="flex w-full max-w-sm items-center gap-2">
+          <Button asChild>
+            <Link to="/signup">Gain clarity now</Link>
+          </Button>
+          <p className="mt-2 text-muted-foreground text-xs">
+            Yes, it's free to start.
+          </p>
+          {/* <div className="flex w-full max-w-sm items-center gap-2">
             <Input placeholder="Email" type="email" />
             <Button>Get Early Access</Button>
           </div>
           <p className="mt-4 text-muted-foreground text-xs">
             👉 Join the waitlist — reflect before you renew.
-          </p>
+          </p> */}
         </motion.div>
       </section>
+
       <section className="container mx-auto max-w-7xl p-10 lg:p-16">
         <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
           You're Probably Paying for Things You Don't Use — or Don't Even Want
@@ -94,6 +99,7 @@ function Home() {
           or utility.
         </p>
       </section>
+
       <section className="container mx-auto max-w-7xl p-10 lg:p-16">
         <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
           Subman Helps You Cut Through the Noise
@@ -103,6 +109,7 @@ function Home() {
           It's about spending with intention.
         </p>
       </section>
+
       <section className="container mx-auto max-w-7xl p-10 lg:p-16">
         <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
           Built for those who care where their money — and data — goes.
@@ -122,25 +129,24 @@ function Home() {
           </div>
         </div>
       </section>
-      <section className="container mx-auto max-w-7xl p-10 lg:p-16">
-        <h2 className="mb-16 font-semibold font-serif text-3xl lg:text-6xl">
-          Reflect Before You Renew.
-        </h2>
-        <p className="leading-7">Subman is launching soon.</p>
-        <p className="leading-7">
-          Join the waitlist to get early access — and your first monthly value
-          report.
-        </p>
-        <Button>Get Early Access</Button>
-        <p className="mt-4 text-muted-foreground text-xs">
-          no spam, no noise — just value
-        </p>
-      </section>
-      <footer className="p-10 text-center lg:p-16">
-        <h3 className="font-serif text-xl lg:text-2xl">
-          Not another expense tracker. Just a better relationship with what you
-          pay for.
-        </h3>
+
+      <footer className="p-2 lg:p-8">
+        <div className="container mx-auto flex max-w-7xl flex-col items-center justify-center rounded-2xl bg-muted p-4 text-center lg:p-8">
+          <h2 className="mb-10 font-semibold font-serif text-3xl lg:mb-16 lg:text-6xl">
+            Reflect Before You Renew.
+          </h2>
+          <Button asChild>
+            <Link to="/signup">Gain clarity now</Link>
+          </Button>
+          <p className="mt-2 text-muted-foreground text-xs">
+            No spam, no noise — just{' '}
+            <span className="text-foreground">value</span>.
+          </p>
+          <h3 className="mt-10 mb-4 font-serif text-xl lg:mt-16 lg:mb-8 lg:text-2xl">
+            Not another expense tracker. Just a better relationship with what
+            you pay for.
+          </h3>
+        </div>
       </footer>
     </>
   )

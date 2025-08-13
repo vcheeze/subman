@@ -32,8 +32,10 @@ export const Route = createRootRouteWithContext<{
     customerId?: string
   }
 }>()({
-  beforeLoad: async () => {
+  beforeLoad: async ({ context }) => {
     const session = await getSession()
+    // TODO try this: https://x.com/dnlytras/status/1929961310411796624
+    // const { user } = context.queryClient.ensureQueryData()
     return { user: session?.user }
   },
   head: () => ({

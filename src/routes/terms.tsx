@@ -10,7 +10,7 @@ import {
 } from '~/components/ui/card'
 import { Separator } from '~/components/ui/separator'
 
-export const Route = createFileRoute('/_public/terms')({
+export const Route = createFileRoute('/terms')({
   component: Privacy,
 })
 

@@ -1,8 +1,7 @@
 import { A } from '@mobily/ts-belt'
 import { Await, createFileRoute, Link } from '@tanstack/react-router'
-import { Plus } from 'lucide-react'
+import { Ellipsis, Plus } from 'lucide-react'
 import { motion } from 'motion/react'
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { Button } from '~/components/ui/button'
 import {
   Card,
@@ -24,7 +23,7 @@ import {
   TooltipTrigger,
 } from '~/components/ui/tooltip'
 import { fetchSubscriptions } from '~/queries/subscriptions'
-import { cn, getInitials } from '~/utils'
+import { cn } from '~/utils'
 
 export const Route = createFileRoute('/_authed/app')({
   loader: ({ context }) => {
@@ -65,12 +64,9 @@ function App() {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Avatar className="hover:cursor-pointer">
-              <AvatarImage src={user?.image ?? ''} />
-              <AvatarFallback className="bg-orange-2 hover:bg-orange-3">
-                {getInitials(user?.name)}
-              </AvatarFallback>
-            </Avatar>
+            <Button size="icon" variant="outline">
+              <Ellipsis className="size-4" />
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Profile</DropdownMenuItem>
@@ -144,7 +140,7 @@ function App() {
               <div className="relative grid lg:grid-cols-2">
                 <div className="-left-4 -right-4 -z-10 absolute top-0 bottom-0 border-muted border-t border-b" />
                 <div className="-top-4 -bottom-4 -z-10 absolute right-0 left-0 border-muted border-r border-l" />
-                <div className="border-muted border-b-1 p-6 lg:border-r-1">
+                <div className="border-muted border-b-1 p-6 transition-shadow hover:shadow lg:border-r-1">
                   <div className="mb-2 font-medium text-lg text-muted-foreground/50 uppercase transition-colors hover:text-muted-foreground">
                     / Average Value
                   </div>
@@ -176,7 +172,7 @@ function App() {
                     </div>
                   </div>
                 </div>
-                <div className="p-6">
+                <div className="p-6 transition-shadow hover:shadow">
                   <div className="mb-2 font-medium text-lg text-muted-foreground/50 uppercase transition-colors hover:text-muted-foreground">
                     / Cost per point
                   </div>
@@ -203,6 +199,88 @@ function App() {
                   <div className="text-center text-muted-foreground text-xs">
                     Average vs. Lowest
                   </div>
+                </div>
+              </div>
+
+              <div className="relative grid lg:grid-cols-2">
+                <div className="-left-4 -right-4 -z-10 absolute top-0 bottom-0 border-muted border-b" />
+                <div className="-top-4 -bottom-4 -z-10 absolute right-0 left-0 border-muted border-r border-l" />
+                <div className="border-muted border-b p-6 transition-shadow hover:shadow lg:border-r">
+                  <div className="mb-2 font-medium text-lg text-muted-foreground/50 uppercase transition-colors hover:text-muted-foreground">
+                    / Subs by Rating
+                  </div>
+                  <div className="flex gap-2">
+                    {[...new Array(5)].map((_, index) => (
+                      <div
+                        className="flex max-w-16 flex-auto flex-col items-center gap-1"
+                        // biome-ignore lint/suspicious/noArrayIndexKey: no id for key, using index instead
+                        key={`rating_${index}_count`}
+                      >
+                        <div className="text-muted-foreground text-xs">
+                          {index + 1}
+                        </div>
+                        {/* {[...new Array(subsByRating[index + 1]?.length ?? 0)].map( */}
+                        {subsByRating[index + 1]?.map((sub) => (
+                          <Tooltip key={sub.id}>
+                            <TooltipTrigger asChild>
+                              <div
+                                className={`h-3 w-full rounded ${getRatingCountColor(index + 1)}`}
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="mb-2 border-b-1 pb-1 text-foreground">
+                                {sub.name}
+                              </p>
+                              <p>${sub.amount}</p>
+                              <p>{sub.rating} stars</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="p-6 transition-shadow hover:shadow">
+                  <div className="mb-2 font-medium text-lg text-muted-foreground/50 uppercase transition-colors hover:text-muted-foreground">
+                    / Subs by Price
+                  </div>
+                  <table>
+                    <tbody>
+                      {data.map((sub) => {
+                        const percentage =
+                          (Number.parseFloat(sub.amount) / maxAmount) * 100
+
+                        return (
+                          <tr key={sub.id}>
+                            <td
+                              align="right"
+                              className="whitespace-nowrap p-1 text-muted-foreground text-xs"
+                            >
+                              {sub.name}
+                            </td>
+                            <td className="w-full p-1">
+                              <motion.div
+                                animate={{ width: `${percentage}%` }}
+                                className={'h-3 rounded bg-orange-8'}
+                                initial={{ width: 0 }}
+                                transition={{
+                                  duration: 0.6,
+                                  ease: 'easeOut',
+                                  type: 'spring',
+                                }}
+                              />
+                            </td>
+                            <td
+                              align="right"
+                              className="whitespace-nowrap p-1 text-muted-foreground text-xs"
+                            >
+                              ${sub.amount}
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
@@ -248,88 +326,6 @@ function App() {
                         </CardContent>
                       </Card>
                     ))}
-                </div>
-              </div>
-
-              <div className="relative grid lg:grid-cols-2">
-                <div className="-left-4 -right-4 -z-10 absolute top-0 bottom-0 border-muted border-b" />
-                <div className="-top-4 -bottom-4 -z-10 absolute right-0 left-0 border-muted border-r border-l" />
-                <div className="border-muted border-b p-6 lg:border-r">
-                  <div className="mb-2 font-medium text-lg text-muted-foreground/50 uppercase transition-colors hover:text-muted-foreground">
-                    / Subs by Rating
-                  </div>
-                  <div className="flex gap-2">
-                    {[...new Array(5)].map((_, index) => (
-                      <div
-                        className="flex max-w-16 flex-auto flex-col items-center gap-1"
-                        // biome-ignore lint/suspicious/noArrayIndexKey: no id for key, using index instead
-                        key={`rating_${index}_count`}
-                      >
-                        <div className="text-muted-foreground text-xs">
-                          {index + 1}
-                        </div>
-                        {/* {[...new Array(subsByRating[index + 1]?.length ?? 0)].map( */}
-                        {subsByRating[index + 1]?.map((sub) => (
-                          <Tooltip key={sub.id}>
-                            <TooltipTrigger asChild>
-                              <div
-                                className={`h-3 w-full rounded ${getRatingCountColor(index + 1)}`}
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="mb-2 border-b-1 pb-1 text-foreground">
-                                {sub.name}
-                              </p>
-                              <p>${sub.amount}</p>
-                              <p>{sub.rating} stars</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="mb-2 font-medium text-lg text-muted-foreground/50 uppercase transition-colors hover:text-muted-foreground">
-                    / Subs by Price
-                  </div>
-                  <table>
-                    <tbody>
-                      {data.map((sub) => {
-                        const percentage =
-                          (Number.parseFloat(sub.amount) / maxAmount) * 100
-
-                        return (
-                          <tr key={sub.id}>
-                            <td
-                              align="right"
-                              className="whitespace-nowrap p-1 text-muted-foreground text-xs"
-                            >
-                              {sub.name}
-                            </td>
-                            <td className="w-full p-1">
-                              <motion.div
-                                animate={{ width: `${percentage}%` }}
-                                className={'h-3 rounded bg-orange-8'}
-                                initial={{ width: 0 }}
-                                transition={{
-                                  duration: 0.6,
-                                  ease: 'easeOut',
-                                  type: 'spring',
-                                }}
-                              />
-                            </td>
-                            <td
-                              align="right"
-                              className="whitespace-nowrap p-1 text-muted-foreground text-xs"
-                            >
-                              ${sub.amount}
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
