@@ -1,9 +1,10 @@
 import { CustomerPortal } from '@polar-sh/tanstack-start'
-import { createServerFileRoute, getSession } from '@tanstack/react-start/server'
+import { createServerFileRoute } from '@tanstack/react-start/server'
+// import { createServerFileRoute, getSession } from '@tanstack/react-start/server'
 
 export const ServerRoute = createServerFileRoute('/api/portal').methods({
   GET: CustomerPortal({
-    accessToken: process.env.POLAR_ACCESS_TOKEN,
+    accessToken: process.env.POLAR_ACCESS_TOKEN || '',
     getCustomerId: async (request: Request) => {
       return ''
       // const session = await getSession({

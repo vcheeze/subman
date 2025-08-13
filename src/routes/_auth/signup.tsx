@@ -9,11 +9,11 @@ import { Label } from '~/components/ui/label'
 import { Separator } from '~/components/ui/separator'
 import { authClient } from '~/utils/auth-client'
 
-export const Route = createFileRoute('/_public/signup')({
+export const Route = createFileRoute('/_auth/signup')({
   validateSearch: (search) =>
-    ({
-      redirect: (search.redirect as string) || '/subs/add',
-    }) as { redirect?: string },
+    (({
+      redirect: (search.redirect as string) || '/subs/add'
+    }) as { redirect?: string }),
   beforeLoad: ({ context, search }) => {
     // Redirect if already logged in
     if (context.user) {
@@ -54,11 +54,10 @@ function RouteComponent() {
   }
 
   const handleGoogleLogin = async () => {
-    const data = await authClient.signIn.social({
+    await authClient.signIn.social({
       provider: 'google',
       callbackURL: '/app',
     })
-    console.log('data :>> ', data)
   }
 
   return (
@@ -69,12 +68,7 @@ function RouteComponent() {
       </h1>
       <p className="mb-6 text-muted-foreground text-sm">
         Already have an account?&nbsp;
-        <Link
-          className="underline"
-          search={{ redirect }}
-          to="/signin"
-          viewTransition
-        >
+        <Link className="underline" to="/signin" viewTransition>
           Sign in
         </Link>
       </p>

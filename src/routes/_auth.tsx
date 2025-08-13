@@ -3,7 +3,7 @@ import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 import { seo } from '~/utils/seo'
 
-export const Route = createFileRoute('/_public')({
+export const Route = createFileRoute('/_auth')({
   beforeLoad: ({ context }) => {
     if (context.user) {
       throw redirect({

@@ -14,18 +14,18 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as UsersRouteRouteImport } from './routes/users.route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
 import { Route as UsersUserIdRouteImport } from './routes/users.$userId'
-import { Route as PublicSignupRouteImport } from './routes/_public/signup'
-import { Route as PublicSigninRouteImport } from './routes/_public/signin'
-import { Route as PublicDemoRouteImport } from './routes/_public/demo'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
 import { Route as AuthedAppLandingRouteImport } from './routes/_authed/app-landing'
 import { Route as AuthedAppRouteImport } from './routes/_authed/app'
+import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
+import { Route as AuthSigninRouteImport } from './routes/_auth/signin'
+import { Route as AuthDemoRouteImport } from './routes/_auth/demo'
 import { Route as AuthedSubsAddRouteImport } from './routes/_authed/subs.add'
 import { ServerRoute as ApiPortalServerRouteImport } from './routes/api/portal'
 import { ServerRoute as ApiCheckoutServerRouteImport } from './routes/api/checkout'
@@ -49,12 +49,12 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PublicRoute = PublicRouteImport.update({
-  id: '/_public',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UsersRouteRoute = UsersRouteRouteImport.update({
@@ -77,21 +77,6 @@ const UsersUserIdRoute = UsersUserIdRouteImport.update({
   path: '/$userId',
   getParentRoute: () => UsersRouteRoute,
 } as any)
-const PublicSignupRoute = PublicSignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicSigninRoute = PublicSigninRouteImport.update({
-  id: '/signin',
-  path: '/signin',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicDemoRoute = PublicDemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
-  getParentRoute: () => PublicRoute,
-} as any)
 const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -106,6 +91,21 @@ const AuthedAppRoute = AuthedAppRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => AuthedRoute,
+} as any)
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSigninRoute = AuthSigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthDemoRoute = AuthDemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthedSubsAddRoute = AuthedSubsAddRouteImport.update({
   id: '/subs/add',
@@ -139,12 +139,12 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/demo': typeof AuthDemoRoute
+  '/signin': typeof AuthSigninRoute
+  '/signup': typeof AuthSignupRoute
   '/app': typeof AuthedAppRoute
   '/app-landing': typeof AuthedAppLandingRoute
   '/settings': typeof AuthedSettingsRoute
-  '/demo': typeof PublicDemoRoute
-  '/signin': typeof PublicSigninRoute
-  '/signup': typeof PublicSignupRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/users/': typeof UsersIndexRoute
   '/subs/add': typeof AuthedSubsAddRoute
@@ -154,12 +154,12 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/demo': typeof AuthDemoRoute
+  '/signin': typeof AuthSigninRoute
+  '/signup': typeof AuthSignupRoute
   '/app': typeof AuthedAppRoute
   '/app-landing': typeof AuthedAppLandingRoute
   '/settings': typeof AuthedSettingsRoute
-  '/demo': typeof PublicDemoRoute
-  '/signin': typeof PublicSigninRoute
-  '/signup': typeof PublicSignupRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/users': typeof UsersIndexRoute
   '/subs/add': typeof AuthedSubsAddRoute
@@ -168,17 +168,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/users': typeof UsersRouteRouteWithChildren
+  '/_auth': typeof AuthRouteWithChildren
   '/_authed': typeof AuthedRouteWithChildren
-  '/_public': typeof PublicRouteWithChildren
   '/about': typeof AboutRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
+  '/_auth/demo': typeof AuthDemoRoute
+  '/_auth/signin': typeof AuthSigninRoute
+  '/_auth/signup': typeof AuthSignupRoute
   '/_authed/app': typeof AuthedAppRoute
   '/_authed/app-landing': typeof AuthedAppLandingRoute
   '/_authed/settings': typeof AuthedSettingsRoute
-  '/_public/demo': typeof PublicDemoRoute
-  '/_public/signin': typeof PublicSigninRoute
-  '/_public/signup': typeof PublicSignupRoute
   '/users/$userId': typeof UsersUserIdRoute
   '/users/': typeof UsersIndexRoute
   '/_authed/subs/add': typeof AuthedSubsAddRoute
@@ -191,12 +191,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/privacy'
     | '/terms'
-    | '/app'
-    | '/app-landing'
-    | '/settings'
     | '/demo'
     | '/signin'
     | '/signup'
+    | '/app'
+    | '/app-landing'
+    | '/settings'
     | '/users/$userId'
     | '/users/'
     | '/subs/add'
@@ -206,12 +206,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/privacy'
     | '/terms'
-    | '/app'
-    | '/app-landing'
-    | '/settings'
     | '/demo'
     | '/signin'
     | '/signup'
+    | '/app'
+    | '/app-landing'
+    | '/settings'
     | '/users/$userId'
     | '/users'
     | '/subs/add'
@@ -219,17 +219,17 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/users'
+    | '/_auth'
     | '/_authed'
-    | '/_public'
     | '/about'
     | '/privacy'
     | '/terms'
+    | '/_auth/demo'
+    | '/_auth/signin'
+    | '/_auth/signup'
     | '/_authed/app'
     | '/_authed/app-landing'
     | '/_authed/settings'
-    | '/_public/demo'
-    | '/_public/signin'
-    | '/_public/signup'
     | '/users/$userId'
     | '/users/'
     | '/_authed/subs/add'
@@ -238,8 +238,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UsersRouteRoute: typeof UsersRouteRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
   AuthedRoute: typeof AuthedRouteWithChildren
-  PublicRoute: typeof PublicRouteWithChildren
   AboutRoute: typeof AboutRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
@@ -306,18 +306,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_public': {
-      id: '/_public'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PublicRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authed': {
       id: '/_authed'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/users': {
@@ -348,27 +348,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUserIdRouteImport
       parentRoute: typeof UsersRouteRoute
     }
-    '/_public/signup': {
-      id: '/_public/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof PublicSignupRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/signin': {
-      id: '/_public/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof PublicSigninRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/demo': {
-      id: '/_public/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof PublicDemoRouteImport
-      parentRoute: typeof PublicRoute
-    }
     '/_authed/settings': {
       id: '/_authed/settings'
       path: '/settings'
@@ -389,6 +368,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/app'
       preLoaderRoute: typeof AuthedAppRouteImport
       parentRoute: typeof AuthedRoute
+    }
+    '/_auth/signup': {
+      id: '/_auth/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/signin': {
+      id: '/_auth/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof AuthSigninRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/demo': {
+      id: '/_auth/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof AuthDemoRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_authed/subs/add': {
       id: '/_authed/subs/add'
@@ -446,6 +446,20 @@ const UsersRouteRouteWithChildren = UsersRouteRoute._addFileChildren(
   UsersRouteRouteChildren,
 )
 
+interface AuthRouteChildren {
+  AuthDemoRoute: typeof AuthDemoRoute
+  AuthSigninRoute: typeof AuthSigninRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthDemoRoute: AuthDemoRoute,
+  AuthSigninRoute: AuthSigninRoute,
+  AuthSignupRoute: AuthSignupRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 interface AuthedRouteChildren {
   AuthedAppRoute: typeof AuthedAppRoute
   AuthedAppLandingRoute: typeof AuthedAppLandingRoute
@@ -463,26 +477,11 @@ const AuthedRouteChildren: AuthedRouteChildren = {
 const AuthedRouteWithChildren =
   AuthedRoute._addFileChildren(AuthedRouteChildren)
 
-interface PublicRouteChildren {
-  PublicDemoRoute: typeof PublicDemoRoute
-  PublicSigninRoute: typeof PublicSigninRoute
-  PublicSignupRoute: typeof PublicSignupRoute
-}
-
-const PublicRouteChildren: PublicRouteChildren = {
-  PublicDemoRoute: PublicDemoRoute,
-  PublicSigninRoute: PublicSigninRoute,
-  PublicSignupRoute: PublicSignupRoute,
-}
-
-const PublicRouteWithChildren =
-  PublicRoute._addFileChildren(PublicRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UsersRouteRoute: UsersRouteRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
   AuthedRoute: AuthedRouteWithChildren,
-  PublicRoute: PublicRouteWithChildren,
   AboutRoute: AboutRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,

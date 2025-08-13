@@ -16,12 +16,11 @@ import { Label } from '~/components/ui/label'
 import { Separator } from '~/components/ui/separator'
 import { authClient } from '~/utils/auth-client'
 
-export const Route = createFileRoute('/_public/signin')({
-  validateSearch: (search) => {
-    return {
-      redirect: (search.redirect as string) || '/app',
-    }
-  },
+export const Route = createFileRoute('/_auth/signin')({
+  validateSearch: (search) =>
+    ({ redirect: (search.redirect as string) || '/app' }) as {
+      redirect?: string
+    },
   beforeLoad: ({ context, search }) => {
     // Redirect if already logged in
     if (context.user) {

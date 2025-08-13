@@ -13,11 +13,11 @@ export const createSubscriptions = createServerFn({
   .handler(async ({ data }) => {
     // Get the web request which contains headers
     const request = getWebRequest()
-    const { user } = await auth.api.getSession({
+    const session = await auth.api.getSession({
       headers: request.headers,
     })
 
-    if (user) {
+    if (session?.user) {
       return db.insert(subscription).values(data)
     }
     return saveToLocalStorage('subscriptions', data)
