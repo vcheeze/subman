@@ -57,7 +57,7 @@ function Home() {
             You don't need another budgeting app. You need to know what's worth
             your budget.
           </p>
-          <Button asChild>
+          <Button asChild size="lg">
             <Link to="/signup">Gain clarity now</Link>
           </Button>
           <p className="mt-2 text-muted-foreground text-xs">
@@ -146,6 +146,17 @@ function Home() {
             Not another expense tracker. Just a better relationship with what
             you pay for.
           </h3>
+          <p className="text-muted-foreground text-xs">
+            Built by{' '}
+            <a
+              className="underline hover:text-foreground"
+              href="https://vcheeze.pages.dev"
+              rel="noopener"
+              target="_blank"
+            >
+              vcheeze
+            </a>
+          </p>
         </div>
       </footer>
     </>

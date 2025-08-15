@@ -1,6 +1,11 @@
 node_modules
 package-lock.json
-yarn.lock
+
+# build directories
+dist
+.netlify
+.nitro
+.tanstack
 
 .DS_Store
 .cache
@@ -10,7 +15,7 @@ yarn.lock
 /build/
 /api/
 /server/build
-/public/build# Sentry Config File
+/public/build # Sentry Config File
 .env.sentry-build-plugin
 /test-results/
 /playwright-report/

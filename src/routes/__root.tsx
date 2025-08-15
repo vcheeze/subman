@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 
+import { Databuddy } from '@databuddy/sdk'
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
@@ -108,6 +109,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
+        <Databuddy
+          clientId={process.env.DATABUDDY_CLIENT_ID!}
+          trackErrors={true}
+          trackPerformance
+          trackScreenViews // Default is false, explicitly enable for quick start
+          trackWebVitals={true} // Default is false, explicitly enable for quick start
+        />
       </body>
     </html>
   )
