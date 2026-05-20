@@ -28,7 +28,6 @@ export const Route = createFileRoute('/_auth/signup')({
 })
 
 function RouteComponent() {
-	// biome-ignore lint/nursery/noShadow: Tanstack Router returns the validated search params here with `useSearch`
 	const { redirect } = Route.useSearch()
 	const [showPassword, setShowPassword] = useState(false)
 	const [formError, setFormError] = useState('')
@@ -42,7 +41,7 @@ function RouteComponent() {
 		}
 
 		try {
-			const { data, error } = await authClient.signIn.email({
+			const { error } = await authClient.signIn.email({
 				...jsonData,
 				callbackURL: redirect,
 			})
@@ -78,7 +77,7 @@ function RouteComponent() {
 			</p>
 			<form className='w-full space-y-4' onSubmit={handleLogin}>
 				{formError && (
-					<Alert variant='destructive'>
+					<Alert variant='error'>
 						<IconExclamationCircle />
 						<AlertTitle>We couldn't sign you up.</AlertTitle>
 						<AlertDescription>{formError}</AlertDescription>
@@ -86,11 +85,13 @@ function RouteComponent() {
 				)}
 				<div className='grid items-center gap-2'>
 					<Label htmlFor='email'>Email</Label>
+					{/** biome-ignore lint/correctness/useUniqueElementIds: prefer semantic IDs */}
 					<Input id='email' name='email' type='email' />
 				</div>
 				<div className='grid items-center gap-2'>
 					<Label htmlFor='password'>Password</Label>
 					<div className='flex items-center gap-2'>
+						{/** biome-ignore lint/correctness/useUniqueElementIds: prefer semantic IDs */}
 						<Input
 							id='password'
 							name='password'

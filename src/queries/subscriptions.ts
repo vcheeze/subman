@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { createServerFn } from '@tanstack/react-start'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 import { db } from '@/db'
 import { subscription } from '@/db/schema'
@@ -52,23 +52,18 @@ export const upsertSubscription = createServerFn({ method: 'POST' })
 		(d: { values: SubscriptionFormData; userId: string; subId?: string }) => d,
 	)
 	.handler(async ({ data: { values, userId, subId } }) => {
-		console.info('Adding subscription...')
-		console.log('values, userId, subId :>> ', values, userId, subId)
-		let sub
 		if (subId) {
-			// TODO update
-			sub = await db
+			return await db
 				.update(subscription)
-				.set(values)
-				.where(eq(subscription.id, subId))
+				.set({ ...values, updatedAt: new Date() })
+				.where(and(eq(subscription.id, subId), eq(subscription.userId, userId)))
 				.returning()
 		} else {
-			sub = await db.insert(subscription).values({ ...values, userId })
+			return await db
+				.insert(subscription)
+				.values({ ...values, userId })
+				.returning()
 		}
-
-		console.log('sub :>> ', sub)
-
-		return sub
 	})
 
 export const upsertSubscriptionMutationOptions = (data: {
@@ -78,4 +73,58 @@ export const upsertSubscriptionMutationOptions = (data: {
 }) => ({
 	mutationKey: ['upsertSubscription'],
 	mutationFn: () => upsertSubscription({ data }),
+})
+
+export const updateSubscriptionStatus = createServerFn({ method: 'POST' })
+	.inputValidator(
+		(d: { userId: string; subId: string; isActive: boolean }) => d,
+	)
+	.handler(async ({ data: { userId, subId, isActive } }) => {
+		try {
+			const response = await db
+				.update(subscription)
+				.set({ isActive, updatedAt: new Date() })
+				.where(and(eq(subscription.id, subId), eq(subscription.userId, userId)))
+				.returning()
+
+			if (response.length === 0) {
+				throw new Error('Subscription not found')
+			}
+
+			return response[0]
+		} catch (error) {
+			console.error('Error updating subscription status:', error)
+			throw new Error('Failed to update subscription status')
+		}
+	})
+
+export const updateSubscriptionStatusMutationOptions = (data: {
+	userId: string
+	subId: string
+	isActive: boolean
+}) => ({
+	mutationKey: ['updateSubscriptionStatus'],
+	mutationFn: () => updateSubscriptionStatus({ data }),
+})
+
+export const deleteSubscription = createServerFn({ method: 'POST' })
+	.inputValidator((d: { userId: string; subId: string }) => d)
+	.handler(async ({ data: { userId, subId } }) => {
+		try {
+			const response = await db
+				.delete(subscription)
+				.where(and(eq(subscription.id, subId), eq(subscription.userId, userId)))
+			return { success: true, deleteCount: response.rowCount }
+		} catch (error) {
+			console.error('Error deleting subscription:', error)
+			throw new Error('Failed to delete subscription')
+		}
+	})
+
+export const deleteSubscriptionMutationOptions = (data: {
+	userId: string
+	subId: string
+}) => ({
+	mutationKey: ['deleteSubscription'],
+	mutationFn: () => deleteSubscription({ data }),
 })

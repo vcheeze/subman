@@ -1,4 +1,4 @@
-import { checkout, polar, portal, usage, webhooks } from '@polar-sh/better-auth'
+import { checkout, polar, portal, usage } from '@polar-sh/better-auth'
 import { Polar } from '@polar-sh/sdk'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
@@ -52,4 +52,5 @@ export const auth = betterAuth({
 		}),
 		tanstackStartCookies(), // make sure this is the last plugin in the array
 	],
+	trustedOrigins: ['http://192.168.0.171:3000'],
 })

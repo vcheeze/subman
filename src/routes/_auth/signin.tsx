@@ -49,7 +49,8 @@ function RouteComponent() {
 		}
 
 		try {
-			const { data, error } = await authClient.signIn.email({
+			// TODO use data to update session?
+			const { error } = await authClient.signIn.email({
 				...jsonData,
 				callbackURL: redirect,
 			})
@@ -74,7 +75,7 @@ function RouteComponent() {
 	}
 
 	const handleGoogleLogin = async () => {
-		const data = await authClient.signIn.social({
+		await authClient.signIn.social({
 			provider: 'google',
 			callbackURL: '/app',
 		})
@@ -99,7 +100,7 @@ function RouteComponent() {
 			</p>
 			<form className='w-full space-y-4' onSubmit={handleLogin}>
 				{formError && (
-					<Alert variant='destructive'>
+					<Alert variant='error'>
 						<IconExclamationCircle />
 						<AlertTitle>We couldn't sign you in.</AlertTitle>
 						<AlertDescription>{formError}</AlertDescription>
@@ -107,11 +108,13 @@ function RouteComponent() {
 				)}
 				<div className='grid items-center gap-2'>
 					<Label htmlFor='email'>Email</Label>
+					{/** biome-ignore lint/correctness/useUniqueElementIds: prefer semantic IDs */}
 					<Input id='email' name='email' type='email' />
 				</div>
 				<div className='grid items-center gap-2'>
 					<Label htmlFor='password'>Password</Label>
 					<div className='flex items-center gap-2'>
+						{/** biome-ignore lint/correctness/useUniqueElementIds: prefer semantic IDs */}
 						<Input
 							id='password'
 							name='password'

@@ -10,7 +10,7 @@ export function ThemeToggle() {
 			onClick={() => setTheme(theme !== 'dark' ? 'dark' : 'light')}
 			variant='ghost'
 		>
-			<IconBrightness className='size-4' />
+			<IconBrightness className='size-4 dark:rotate-180 transition-transform ease-in-out duration-200' />
 			<span className='sr-only'>Toggle theme</span>
 		</Button>
 	)

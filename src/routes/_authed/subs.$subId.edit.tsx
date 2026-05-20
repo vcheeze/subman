@@ -32,7 +32,7 @@ export const Route = createFileRoute('/_authed/subs/$subId/edit')({
 const subscriptionSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
 	amount: z.string().min(1, 'Amount is required'),
-	rating: z.coerce.number().min(1).max(5),
+	rating: z.number().min(1).max(5),
 	notes: z.string().optional(),
 })
 
@@ -53,8 +53,8 @@ function RouteComponent() {
 			name: data?.name ?? '',
 			amount: data?.amount ?? '',
 			rating: data?.rating ?? 1,
-			notes: data?.notes ?? '',
-		},
+			notes: data?.notes,
+		} as z.output<typeof subscriptionSchema>,
 		validators: {
 			onSubmit: subscriptionSchema,
 		},
@@ -115,7 +115,9 @@ function RouteComponent() {
 											value={field.state.value}
 										/>
 										{isInvalid && (
-											<FieldError errors={field.state.meta.errors} />
+											<FieldError>
+												{field.state.meta.errors.join(', ')}
+											</FieldError>
 										)}
 									</Field>
 								)
@@ -143,7 +145,9 @@ function RouteComponent() {
 											value={field.state.value}
 										/>
 										{isInvalid && (
-											<FieldError errors={field.state.meta.errors} />
+											<FieldError>
+												{field.state.meta.errors.join(', ')}
+											</FieldError>
 										)}
 									</Field>
 								)
@@ -180,7 +184,9 @@ function RouteComponent() {
 											<br />1 = "I wouldn't keep it even if it were free"
 										</FieldDescription>
 										{isInvalid && (
-											<FieldError errors={field.state.meta.errors} />
+											<FieldError>
+												{field.state.meta.errors.join(', ')}
+											</FieldError>
 										)}
 									</Field>
 								)
@@ -207,7 +213,9 @@ function RouteComponent() {
 											value={field.state.value}
 										/>
 										{isInvalid && (
-											<FieldError errors={field.state.meta.errors} />
+											<FieldError>
+												{field.state.meta.errors.join(', ')}
+											</FieldError>
 										)}
 									</Field>
 								)

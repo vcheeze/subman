@@ -15,6 +15,8 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiPortalRouteImport } from './routes/api/portal'
+import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
 import { Route as AuthedAppRouteImport } from './routes/_authed/app'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
@@ -22,6 +24,7 @@ import { Route as AuthSigninRouteImport } from './routes/_auth/signin'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthedSubsAddRouteImport } from './routes/_authed/subs.add'
 import { Route as AuthedSubsSubIdRouteImport } from './routes/_authed/subs.$subId'
+import { Route as AuthedSubsSubIdIndexRouteImport } from './routes/_authed/subs.$subId.index'
 import { Route as AuthedSubsSubIdEditRouteImport } from './routes/_authed/subs.$subId.edit'
 
 const TermsRoute = TermsRouteImport.update({
@@ -50,6 +53,16 @@ const AuthRoute = AuthRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPortalRoute = ApiPortalRouteImport.update({
+  id: '/api/portal',
+  path: '/api/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
+  id: '/api/checkout',
+  path: '/api/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
@@ -87,6 +100,11 @@ const AuthedSubsSubIdRoute = AuthedSubsSubIdRouteImport.update({
   path: '/subs/$subId',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedSubsSubIdIndexRoute = AuthedSubsSubIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedSubsSubIdRoute,
+} as any)
 const AuthedSubsSubIdEditRoute = AuthedSubsSubIdEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -102,10 +120,13 @@ export interface FileRoutesByFullPath {
   '/signup': typeof AuthSignupRoute
   '/app': typeof AuthedAppRoute
   '/settings': typeof AuthedSettingsRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/api/portal': typeof ApiPortalRoute
   '/subs/$subId': typeof AuthedSubsSubIdRouteWithChildren
   '/subs/add': typeof AuthedSubsAddRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/subs/$subId/edit': typeof AuthedSubsSubIdEditRoute
+  '/subs/$subId/': typeof AuthedSubsSubIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -116,10 +137,12 @@ export interface FileRoutesByTo {
   '/signup': typeof AuthSignupRoute
   '/app': typeof AuthedAppRoute
   '/settings': typeof AuthedSettingsRoute
-  '/subs/$subId': typeof AuthedSubsSubIdRouteWithChildren
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/api/portal': typeof ApiPortalRoute
   '/subs/add': typeof AuthedSubsAddRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/subs/$subId/edit': typeof AuthedSubsSubIdEditRoute
+  '/subs/$subId': typeof AuthedSubsSubIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,10 +156,13 @@ export interface FileRoutesById {
   '/_auth/signup': typeof AuthSignupRoute
   '/_authed/app': typeof AuthedAppRoute
   '/_authed/settings': typeof AuthedSettingsRoute
+  '/api/checkout': typeof ApiCheckoutRoute
+  '/api/portal': typeof ApiPortalRoute
   '/_authed/subs/$subId': typeof AuthedSubsSubIdRouteWithChildren
   '/_authed/subs/add': typeof AuthedSubsAddRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_authed/subs/$subId/edit': typeof AuthedSubsSubIdEditRoute
+  '/_authed/subs/$subId/': typeof AuthedSubsSubIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -149,10 +175,13 @@ export interface FileRouteTypes {
     | '/signup'
     | '/app'
     | '/settings'
+    | '/api/checkout'
+    | '/api/portal'
     | '/subs/$subId'
     | '/subs/add'
     | '/api/auth/$'
     | '/subs/$subId/edit'
+    | '/subs/$subId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -163,10 +192,12 @@ export interface FileRouteTypes {
     | '/signup'
     | '/app'
     | '/settings'
-    | '/subs/$subId'
+    | '/api/checkout'
+    | '/api/portal'
     | '/subs/add'
     | '/api/auth/$'
     | '/subs/$subId/edit'
+    | '/subs/$subId'
   id:
     | '__root__'
     | '/'
@@ -179,10 +210,13 @@ export interface FileRouteTypes {
     | '/_auth/signup'
     | '/_authed/app'
     | '/_authed/settings'
+    | '/api/checkout'
+    | '/api/portal'
     | '/_authed/subs/$subId'
     | '/_authed/subs/add'
     | '/api/auth/$'
     | '/_authed/subs/$subId/edit'
+    | '/_authed/subs/$subId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -192,6 +226,8 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
+  ApiCheckoutRoute: typeof ApiCheckoutRoute
+  ApiPortalRoute: typeof ApiPortalRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -237,6 +273,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/portal': {
+      id: '/api/portal'
+      path: '/api/portal'
+      fullPath: '/api/portal'
+      preLoaderRoute: typeof ApiPortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkout': {
+      id: '/api/checkout'
+      path: '/api/checkout'
+      fullPath: '/api/checkout'
+      preLoaderRoute: typeof ApiCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed/settings': {
@@ -288,6 +338,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedSubsSubIdRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/subs/$subId/': {
+      id: '/_authed/subs/$subId/'
+      path: '/'
+      fullPath: '/subs/$subId/'
+      preLoaderRoute: typeof AuthedSubsSubIdIndexRouteImport
+      parentRoute: typeof AuthedSubsSubIdRoute
+    }
     '/_authed/subs/$subId/edit': {
       id: '/_authed/subs/$subId/edit'
       path: '/edit'
@@ -312,10 +369,12 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface AuthedSubsSubIdRouteChildren {
   AuthedSubsSubIdEditRoute: typeof AuthedSubsSubIdEditRoute
+  AuthedSubsSubIdIndexRoute: typeof AuthedSubsSubIdIndexRoute
 }
 
 const AuthedSubsSubIdRouteChildren: AuthedSubsSubIdRouteChildren = {
   AuthedSubsSubIdEditRoute: AuthedSubsSubIdEditRoute,
+  AuthedSubsSubIdIndexRoute: AuthedSubsSubIdIndexRoute,
 }
 
 const AuthedSubsSubIdRouteWithChildren = AuthedSubsSubIdRoute._addFileChildren(
@@ -346,6 +405,8 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
+  ApiCheckoutRoute: ApiCheckoutRoute,
+  ApiPortalRoute: ApiPortalRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

@@ -28,7 +28,8 @@ export const Route = createFileRoute('/_authed/subs/add')({
 const subscriptionSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
 	amount: z.string().min(1, 'Amount is required'),
-	rating: z.coerce.number().min(1).max(5),
+	rating: z.number().min(1).max(5),
+	startDate: z.string().optional(),
 	notes: z.string().optional(),
 })
 
@@ -45,8 +46,7 @@ function RouteComponent() {
 			name: '',
 			amount: '',
 			rating: 1,
-			notes: '',
-		},
+		} as z.output<typeof subscriptionSchema>,
 		validators: {
 			onSubmit: subscriptionSchema,
 		},
@@ -86,7 +86,6 @@ function RouteComponent() {
 					>
 						<form.Field name='name'>
 							{(field) => {
-								console.log('field.state.meta :>> ', field.state.meta)
 								const isInvalid =
 									field.state.meta.isTouched && !field.state.meta.isValid
 
@@ -106,7 +105,7 @@ function RouteComponent() {
 										{/* {isInvalid && ( */}
 										<FieldError>
 											{field.state.meta.errors
-												.map((error) => error.message)
+												.map((error) => error?.message)
 												.join(', ')}
 										</FieldError>
 										{/* )} */}
@@ -173,6 +172,39 @@ function RouteComponent() {
 											Forget price. Think about how you feel.
 											<br />5 = "I'd hate to live without it"
 											<br />1 = "I wouldn't keep it even if it were free"
+										</FieldDescription>
+										{isInvalid && (
+											<FieldError>
+												{field.state.meta.errors.join(', ')}
+											</FieldError>
+										)}
+									</Field>
+								)
+							}}
+						</form.Field>
+
+						<form.Field name='startDate'>
+							{(field) => {
+								const isInvalid =
+									field.state.meta.isTouched && !field.state.meta.isValid
+
+								return (
+									<Field data-invalid={isInvalid}>
+										<FieldLabel htmlFor={field.name}>
+											When did you start it? (Optional)
+										</FieldLabel>
+										<Input
+											aria-invalid={isInvalid}
+											id={field.name}
+											onBlur={field.handleBlur}
+											onChange={(e) => field.handleChange(e.target.value)}
+											placeholder='1-5'
+											type='date'
+											value={field.state.value}
+										/>
+										<FieldDescription className='text-xs'>
+											This gives a rough estimate on how much you've paid so
+											far.
 										</FieldDescription>
 										{isInvalid && (
 											<FieldError>
