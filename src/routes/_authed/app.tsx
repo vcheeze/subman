@@ -228,7 +228,9 @@ function App() {
 						className='hidden size-7 rounded-sm dark:block'
 						src='/logo_dark.svg'
 					/>
-					<span className='truncate font-serif text-xl'>Subman</span>
+					<span className='hidden truncate font-serif text-xl sm:inline'>
+						Subman
+					</span>
 				</Link>
 				<div className='flex items-center justify-end gap-2'>
 					<Button
@@ -590,7 +592,7 @@ function App() {
 							</div>
 							{inactiveSubscriptions.length > 0 && (
 								<label
-									className='flex items-center gap-2 text-muted-foreground text-sm'
+									className='flex items-center gap-2 text-muted-foreground text-xs'
 									htmlFor={showInactiveId}
 								>
 									<span>show inactive</span>

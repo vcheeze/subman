@@ -5,11 +5,11 @@ import { useId, useState } from 'react'
 
 import {
 	AlertDialog,
-	AlertDialogClose,
+	AlertDialogCancel,
+	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
-	AlertDialogPopup,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
@@ -210,7 +210,7 @@ function RouteComponent() {
 					</Button>
 					<div className='flex items-center gap-3'>
 						<label
-							className='flex items-center gap-2 text-muted-foreground text-sm'
+							className='flex items-center gap-2 text-muted-foreground text-xs md:text-sm'
 							htmlFor={statusSwitchId}
 						>
 							<span>{isActive ? 'active' : 'inactive'}</span>
@@ -387,7 +387,7 @@ function RouteComponent() {
 				open={isDeleteDialogOpen}
 				onOpenChange={setIsDeleteDialogOpen}
 			>
-				<AlertDialogPopup>
+				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>Delete {data.name}?</AlertDialogTitle>
 						<AlertDialogDescription>
@@ -395,9 +395,9 @@ function RouteComponent() {
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogClose render={<Button variant='ghost' />}>
+						<AlertDialogCancel render={<Button variant='ghost' />}>
 							Cancel
-						</AlertDialogClose>
+						</AlertDialogCancel>
 						<Button
 							disabled={deleteMutation.isPending}
 							onClick={() => {
@@ -411,7 +411,7 @@ function RouteComponent() {
 							Delete Sub
 						</Button>
 					</AlertDialogFooter>
-				</AlertDialogPopup>
+				</AlertDialogContent>
 			</AlertDialog>
 		</>
 	)
