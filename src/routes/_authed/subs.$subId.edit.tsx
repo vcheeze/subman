@@ -33,6 +33,7 @@ const subscriptionSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
 	amount: z.string().min(1, 'Amount is required'),
 	rating: z.number().min(1).max(5),
+	startDate: z.string().optional(),
 	notes: z.string().optional(),
 })
 
@@ -53,7 +54,8 @@ function RouteComponent() {
 			name: data?.name ?? '',
 			amount: data?.amount ?? '',
 			rating: data?.rating ?? 1,
-			notes: data?.notes,
+			startDate: data?.startDate ?? '',
+			notes: data?.notes ?? '',
 		} as z.output<typeof subscriptionSchema>,
 		validators: {
 			onSubmit: subscriptionSchema,
@@ -182,6 +184,38 @@ function RouteComponent() {
 											Forget price. Think about how you feel.
 											<br />5 = "I'd hate to live without it"
 											<br />1 = "I wouldn't keep it even if it were free"
+										</FieldDescription>
+										{isInvalid && (
+											<FieldError>
+												{field.state.meta.errors.join(', ')}
+											</FieldError>
+										)}
+									</Field>
+								)
+							}}
+						</form.Field>
+
+						<form.Field name='startDate'>
+							{(field) => {
+								const isInvalid =
+									field.state.meta.isTouched && !field.state.meta.isValid
+
+								return (
+									<Field data-invalid={isInvalid}>
+										<FieldLabel htmlFor={field.name}>
+											When did you start it? (Optional)
+										</FieldLabel>
+										<Input
+											aria-invalid={isInvalid}
+											id={field.name}
+											onBlur={field.handleBlur}
+											onChange={(e) => field.handleChange(e.target.value)}
+											type='date'
+											value={field.state.value ?? ''}
+										/>
+										<FieldDescription className='text-xs'>
+											This gives a rough estimate on how much you've paid so
+											far.
 										</FieldDescription>
 										{isInvalid && (
 											<FieldError>

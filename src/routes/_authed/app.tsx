@@ -1,7 +1,7 @@
 import { A } from '@mobily/ts-belt'
-import { IconDots, IconPencil, IconPlus } from '@tabler/icons-react'
+import { IconLogout, IconPencil, IconPlus } from '@tabler/icons-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import type { Variants } from 'motion/react'
 import { motion } from 'motion/react'
 import { useId, useState } from 'react'
@@ -14,14 +14,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { Menu, MenuItem, MenuPopup, MenuTrigger } from '@/components/ui/menu'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
+import { toastManager } from '@/components/ui/toast'
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 import {
 	// fetchSubscriptions,
@@ -66,11 +67,13 @@ const panelAnimation: Variants = {
 }
 
 function App() {
+	const router = useRouter()
 	const { user } = Route.useLoaderData()
 	const { data: subscriptions, isLoading } = useSuspenseQuery(
 		subscriptionsQueryOptions(user?.id ?? ''),
 	)
 	const [showInactive, setShowInactive] = useState(false)
+	const [isSigningOut, setIsSigningOut] = useState(false)
 	const showInactiveId = useId()
 
 	function parseAmount(amount: string) {
@@ -178,6 +181,34 @@ function App() {
 		}
 	}
 
+	async function handleSignOut() {
+		setIsSigningOut(true)
+
+		try {
+			const { error } = await authClient.signOut()
+
+			if (error) {
+				setIsSigningOut(false)
+				toastManager.add({
+					title: 'Sign out failed',
+					description: error.message || 'Please try again.',
+					type: 'error',
+				})
+				return
+			}
+
+			await router.invalidate()
+			await router.navigate({ to: '/signin' })
+		} catch {
+			setIsSigningOut(false)
+			toastManager.add({
+				title: 'Sign out failed',
+				description: 'Please try again.',
+				type: 'error',
+			})
+		}
+	}
+
 	return (
 		<>
 			<header className='container mx-auto flex items-center justify-end gap-2 p-4 lg:p-8'>
@@ -188,17 +219,24 @@ function App() {
 					<IconPlus className='h-4 w-4' />
 					ADD SUB
 				</Button>
-				<Menu>
-					<MenuTrigger render={<Button size='icon' variant='ghost' />}>
-						<IconDots className='size-4' />
-					</MenuTrigger>
-					<MenuPopup align='end'>
-						<MenuItem>Profile</MenuItem>
-						<MenuItem render={<Link to='/settings' viewTransition />}>
-							Settings
-						</MenuItem>
-					</MenuPopup>
-				</Menu>
+				<Tooltip>
+					<TooltipTrigger
+						render={
+							<Button
+								aria-label={isSigningOut ? 'Signing out' : 'Log out'}
+								disabled={isSigningOut}
+								onClick={handleSignOut}
+								size='icon'
+								variant='ghost'
+							/>
+						}
+					>
+						<IconLogout className='h-4 w-4' />
+					</TooltipTrigger>
+					<TooltipContent>
+						{isSigningOut ? 'Signing out...' : 'Log out'}
+					</TooltipContent>
+				</Tooltip>
 				<ThemeToggle />
 			</header>
 			{isLoading ? (

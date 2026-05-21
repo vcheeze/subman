@@ -46,6 +46,8 @@ function RouteComponent() {
 			name: '',
 			amount: '',
 			rating: 1,
+			startDate: '',
+			notes: '',
 		} as z.output<typeof subscriptionSchema>,
 		validators: {
 			onSubmit: subscriptionSchema,
@@ -198,9 +200,8 @@ function RouteComponent() {
 											id={field.name}
 											onBlur={field.handleBlur}
 											onChange={(e) => field.handleChange(e.target.value)}
-											placeholder='1-5'
 											type='date'
-											value={field.state.value}
+											value={field.state.value ?? ''}
 										/>
 										<FieldDescription className='text-xs'>
 											This gives a rough estimate on how much you've paid so

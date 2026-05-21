@@ -153,7 +153,7 @@ function RouteComponent() {
 				<Separator className='flex-1' />
 			</div>
 			<Button
-				className='flex items-center gap-2'
+				className='flex items-center gap-2 w-full'
 				onClick={handleGoogleLogin}
 				size='lg'
 				variant='outline'

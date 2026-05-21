@@ -10,9 +10,18 @@
 		{
 			"pattern": "subs.mammon-manager.com",
 			"zone_name": "mammon-manager.com",
-			"custom_domain": true
+			"custom_domain": true,
+			"enabled": true,
+      "previews_enabled": false
 		}
 	],
 	"workers_dev": true,
-	"preview_urls": true
+	"preview_urls": true,
+	"vars": {
+		"BETTER_AUTH_URL": "https://subs.mammon-manager.com",
+		"DATABASE_URL": "postgresql://vcheeze:Ksu9jPUdkDI5@ep-purple-term-a1wuqbsh-pooler.ap-southeast-1.aws.neon.tech/subman?sslmode=require",
+		"DATABUDDY_CLIENT_ID": "RyaHvRILOX44SEsD7Disj",
+		"GOOGLE_CLIENT_ID": "588647324295-7265md8ifuqnt0q9k9g8i4sil8alsl30.apps.googleusercontent.com",
+		"POLAR_SUCCESS_URL": "https://subs.mammon-manager.com/app?checkout_id={CHECKOUT_ID}"
+	}
 }

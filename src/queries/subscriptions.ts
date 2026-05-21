@@ -52,16 +52,21 @@ export const upsertSubscription = createServerFn({ method: 'POST' })
 		(d: { values: SubscriptionFormData; userId: string; subId?: string }) => d,
 	)
 	.handler(async ({ data: { values, userId, subId } }) => {
+		const normalizedValues = {
+			...values,
+			startDate: values.startDate || null,
+		}
+
 		if (subId) {
 			return await db
 				.update(subscription)
-				.set({ ...values, updatedAt: new Date() })
+				.set({ ...normalizedValues, updatedAt: new Date() })
 				.where(and(eq(subscription.id, subId), eq(subscription.userId, userId)))
 				.returning()
 		} else {
 			return await db
 				.insert(subscription)
-				.values({ ...values, userId })
+				.values({ ...normalizedValues, userId })
 				.returning()
 		}
 	})
