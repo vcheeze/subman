@@ -17,6 +17,7 @@ import {
 	FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { Spinner } from '@/components/ui/spinner'
 import { Textarea } from '@/components/ui/textarea'
 import { toastManager } from '@/components/ui/toast'
 import { upsertSubscription } from '@/queries/subscriptions'
@@ -254,9 +255,18 @@ function RouteComponent() {
 							>
 								CANCEL
 							</Button>
-							<Button className='max-sm:w-full' type='submit'>
-								ADD TO MY LIST
-							</Button>
+							<form.Subscribe selector={(state) => state.isSubmitting}>
+								{(isSubmitting) => (
+									<Button
+										className='max-sm:w-full'
+										disabled={isSubmitting}
+										type='submit'
+									>
+										{isSubmitting && <Spinner className='size-4' />}
+										ADD TO MY LIST
+									</Button>
+								)}
+							</form.Subscribe>
 						</div>
 					</form>
 				</CardContent>

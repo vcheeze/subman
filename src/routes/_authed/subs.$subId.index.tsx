@@ -22,6 +22,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Spinner } from '@/components/ui/spinner'
 import { Switch } from '@/components/ui/switch'
 import { toastManager } from '@/components/ui/toast'
 import type { Subscription } from '@/db/schema'
@@ -406,6 +407,7 @@ function RouteComponent() {
 							}}
 							variant='destructive'
 						>
+							{deleteMutation.isPending && <Spinner className='size-4' />}
 							Delete Sub
 						</Button>
 					</AlertDialogFooter>

@@ -211,33 +211,55 @@ function App() {
 
 	return (
 		<>
-			<header className='container mx-auto flex items-center justify-end gap-2 p-4 lg:p-8'>
-				<Button
-					render={<Link className='flex gap-2' to='/subs/add' viewTransition />}
-					variant='outline'
+			<header className='container mx-auto flex items-center justify-between gap-4 p-4 lg:p-8'>
+				<Link
+					aria-label='Subman dashboard'
+					className='flex min-w-0 items-center gap-1 text-foreground/80 transition-colors hover:text-foreground'
+					to='/app'
+					viewTransition
 				>
-					<IconPlus className='h-4 w-4' />
-					ADD SUB
-				</Button>
-				<Tooltip>
-					<TooltipTrigger
+					<img
+						alt=''
+						className='size-7 rounded-sm dark:hidden'
+						src='/logo_light.svg'
+					/>
+					<img
+						alt=''
+						className='hidden size-7 rounded-sm dark:block'
+						src='/logo_dark.svg'
+					/>
+					<span className='truncate font-serif text-xl'>Subman</span>
+				</Link>
+				<div className='flex items-center justify-end gap-2'>
+					<Button
 						render={
-							<Button
-								aria-label={isSigningOut ? 'Signing out' : 'Log out'}
-								disabled={isSigningOut}
-								onClick={handleSignOut}
-								size='icon'
-								variant='ghost'
-							/>
+							<Link className='flex gap-2' to='/subs/add' viewTransition />
 						}
+						variant='outline'
 					>
-						<IconLogout className='h-4 w-4' />
-					</TooltipTrigger>
-					<TooltipContent>
-						{isSigningOut ? 'Signing out...' : 'Log out'}
-					</TooltipContent>
-				</Tooltip>
-				<ThemeToggle />
+						<IconPlus className='h-4 w-4' />
+						ADD SUB
+					</Button>
+					<Tooltip>
+						<TooltipTrigger
+							render={
+								<Button
+									aria-label={isSigningOut ? 'Signing out' : 'Log out'}
+									disabled={isSigningOut}
+									onClick={handleSignOut}
+									size='icon'
+									variant='ghost'
+								/>
+							}
+						>
+							<IconLogout className='h-4 w-4' />
+						</TooltipTrigger>
+						<TooltipContent>
+							{isSigningOut ? 'Signing out...' : 'Log out'}
+						</TooltipContent>
+					</Tooltip>
+					<ThemeToggle />
+				</div>
 			</header>
 			{isLoading ? (
 				<Skeleton className='container mx-auto h-64 bg-muted p-4 lg:p-8' />
@@ -409,7 +431,7 @@ function App() {
 							{bestValueSub ? (
 								<div className='flex items-end justify-between gap-4'>
 									<div>
-										<div className='font-medium text-xl'>
+										<div className='text-muted-foreground font-medium text-xl'>
 											{bestValueSub.name}
 										</div>
 										<div className='text-muted-foreground text-xs'>
@@ -417,7 +439,7 @@ function App() {
 										</div>
 									</div>
 									<div className='text-right'>
-										<div className='font-medium text-xl'>
+										<div className='text-muted-foreground font-medium text-xl'>
 											${bestValueSub.costPerPoint.toFixed(2)}
 										</div>
 										<div className='text-muted-foreground text-xs'>
@@ -438,7 +460,7 @@ function App() {
 							{worstValueSub ? (
 								<div className='flex items-end justify-between gap-4'>
 									<div>
-										<div className='font-medium text-xl'>
+										<div className='text-muted-foreground font-medium text-xl'>
 											{worstValueSub.name}
 										</div>
 										<div className='text-muted-foreground text-xs'>
@@ -446,7 +468,7 @@ function App() {
 										</div>
 									</div>
 									<div className='text-right'>
-										<div className='font-medium text-xl'>
+										<div className='text-muted-foreground font-medium text-xl'>
 											${worstValueSub.costPerPoint.toFixed(2)}
 										</div>
 										<div className='text-muted-foreground text-xs'>
