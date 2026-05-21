@@ -232,7 +232,7 @@ function App() {
 						Subman
 					</span>
 				</Link>
-				<div className='flex items-center justify-end gap-2'>
+				<div className='flex items-center justify-end gap-4'>
 					<Button
 						render={
 							<Link className='flex gap-2' to='/subs/add' viewTransition />
@@ -242,25 +242,27 @@ function App() {
 						<IconPlus className='h-4 w-4' />
 						ADD SUB
 					</Button>
-					<Tooltip>
-						<TooltipTrigger
-							render={
-								<Button
-									aria-label={isSigningOut ? 'Signing out' : 'Log out'}
-									disabled={isSigningOut}
-									onClick={handleSignOut}
-									size='icon'
-									variant='ghost'
-								/>
-							}
-						>
-							<IconLogout className='h-4 w-4' />
-						</TooltipTrigger>
-						<TooltipContent>
-							{isSigningOut ? 'Signing out...' : 'Log out'}
-						</TooltipContent>
-					</Tooltip>
-					<ThemeToggle />
+					<div className='flex items-center gap-1'>
+						<ThemeToggle />
+						<Tooltip>
+							<TooltipTrigger
+								render={
+									<Button
+										aria-label={isSigningOut ? 'Signing out' : 'Log out'}
+										disabled={isSigningOut}
+										onClick={handleSignOut}
+										size='icon'
+										variant='ghost'
+									/>
+								}
+							>
+								<IconLogout className='h-4 w-4' />
+							</TooltipTrigger>
+							<TooltipContent>
+								{isSigningOut ? 'Signing out...' : 'Log out'}
+							</TooltipContent>
+						</Tooltip>
+					</div>
 				</div>
 			</header>
 			{isLoading ? (

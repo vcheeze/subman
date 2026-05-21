@@ -8,6 +8,7 @@ export function ThemeToggle() {
 	return (
 		<Button
 			onClick={() => setTheme(theme !== 'dark' ? 'dark' : 'light')}
+			size='icon'
 			variant='ghost'
 		>
 			<IconBrightness className='size-4 dark:rotate-180 transition-transform ease-in-out duration-200' />
