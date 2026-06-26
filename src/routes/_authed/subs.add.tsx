@@ -38,9 +38,6 @@ export type SubscriptionFormData = z.infer<typeof subscriptionSchema>
 
 function RouteComponent() {
 	const navigate = Route.useNavigate()
-	const userId = Route.useRouteContext({
-		select: (context) => context.user?.id ?? '',
-	})
 
 	const form = useForm({
 		defaultValues: {
@@ -55,7 +52,7 @@ function RouteComponent() {
 		},
 		onSubmit: async ({ value }) => {
 			try {
-				await upsertSubscription({ data: { values: value, userId } })
+				await upsertSubscription({ data: { values: value } })
 				navigate({ to: '/app' })
 			} catch {
 				toastManager.add({

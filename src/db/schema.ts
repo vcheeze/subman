@@ -38,6 +38,7 @@ export const session = pgTable('session', {
 	userId: text('user_id')
 		.notNull()
 		.references(() => user.id, { onDelete: 'cascade' }),
+	activeOrganizationId: text('active_organization_id'),
 })
 
 export const account = pgTable('account', {
@@ -71,6 +72,44 @@ export const verification = pgTable('verification', {
 	),
 })
 
+export const organization = pgTable('organization', {
+	id: text('id').primaryKey(),
+	name: text('name').notNull(),
+	slug: text('slug').notNull().unique(),
+	logo: text('logo'),
+	metadata: text('metadata'),
+	createdAt: timestamp('created_at').notNull(),
+})
+
+export const member = pgTable('member', {
+	id: text('id').primaryKey(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	organizationId: text('organization_id')
+		.notNull()
+		.references(() => organization.id, { onDelete: 'cascade' }),
+	role: text('role').notNull().default('member'),
+	createdAt: timestamp('created_at').notNull(),
+})
+
+export const invitation = pgTable('invitation', {
+	id: text('id').primaryKey(),
+	email: text('email').notNull(),
+	inviterId: text('inviter_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	organizationId: text('organization_id')
+		.notNull()
+		.references(() => organization.id, { onDelete: 'cascade' }),
+	role: text('role'),
+	status: text('status').notNull().default('pending'),
+	expiresAt: timestamp('expires_at').notNull(),
+	createdAt: timestamp('created_at')
+		.$defaultFn(() => /* @__PURE__ */ new Date())
+		.notNull(),
+})
+
 export const payment = pgTable('payment', {
 	id: uuid('id').primaryKey(),
 	user_id: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
@@ -92,6 +131,12 @@ export const category = pgTable('category', {
 export const subscription = pgTable('subscription', {
 	id: uuid('id').primaryKey().defaultRandom(),
 	userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }),
+	organizationId: text('organization_id').references(() => organization.id, {
+		onDelete: 'cascade',
+	}),
+	createdByUserId: text('created_by_user_id').references(() => user.id, {
+		onDelete: 'set null',
+	}),
 	name: text('name').notNull(),
 	canonicalServiceId: uuid('canonical_service_id').references(
 		() => service.id,

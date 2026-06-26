@@ -26,12 +26,16 @@ interface MyRouterContext {
 		image?: string | null | undefined
 		customerId?: string
 	}
+	activeOrganizationId?: string | null
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	beforeLoad: async () => {
 		const session = await getSession()
-		return { user: session?.user }
+		return {
+			user: session?.user,
+			activeOrganizationId: session?.session?.activeOrganizationId ?? null,
+		}
 	},
 	head: () => ({
 		meta: [

@@ -1,0 +1,196 @@
+{
+	"schemaVersion": 2,
+	"generatedAt": "2026-06-24T00:00:00.000Z",
+	"title": "Design System: Subman",
+	"extensions": {
+		"colorMeta": {
+			"primary": {
+				"role": "primary",
+				"displayName": "Warm Tangerine",
+				"canonical": "oklch(0.6908 0.1909 45.0151)",
+				"tonalRamp": [
+					"oklch(0.35 0.07 40.83)",
+					"oklch(0.45 0.10 42)",
+					"oklch(0.55 0.14 43)",
+					"oklch(0.62 0.17 44)",
+					"oklch(0.6908 0.1909 45.0151)",
+					"oklch(0.75 0.16 50)",
+					"oklch(0.85 0.11 60)",
+					"oklch(0.9583 0.0371 79.1125)"
+				]
+			},
+			"background": {
+				"role": "neutral",
+				"displayName": "Cool Paper",
+				"canonical": "oklch(0.9938 0.0013 106.4231)",
+				"tonalRamp": [
+					"oklch(0.24 0.008 95)",
+					"oklch(0.35 0.006 100)",
+					"oklch(0.50 0.005 102)",
+					"oklch(0.65 0.004 104)",
+					"oklch(0.80 0.003 105)",
+					"oklch(0.90 0.002 106)",
+					"oklch(0.9556 0.0017 67.802)",
+					"oklch(0.9938 0.0013 106.4231)"
+				]
+			},
+			"foreground": {
+				"role": "neutral",
+				"displayName": "Ink",
+				"canonical": "oklch(0.2431 0.0076 95.3724)",
+				"tonalRamp": [
+					"oklch(0.15 0.01 95)",
+					"oklch(0.20 0.008 95)",
+					"oklch(0.2431 0.0076 95.3724)",
+					"oklch(0.35 0.007 100)",
+					"oklch(0.4981 0.0078 106.6789)",
+					"oklch(0.65 0.005 105)",
+					"oklch(0.80 0.003 106)",
+					"oklch(0.95 0.002 106)"
+				]
+			}
+		},
+		"typographyMeta": {
+			"display": {
+				"displayName": "Display",
+				"purpose": "Landing heroes and major section titles — Cormorant Garamond only."
+			},
+			"body": {
+				"displayName": "Body",
+				"purpose": "UI copy, descriptions, forms — Manrope."
+			},
+			"mono": {
+				"displayName": "App Mono",
+				"purpose": "Authed app shell and cost/metadata display — Geist Mono."
+			}
+		},
+		"shadows": [
+			{
+				"name": "xs",
+				"value": "0px 4px 8px -1px hsl(0 0% 0% / 0.05)",
+				"purpose": "Cards, inputs, outline buttons at rest."
+			},
+			{
+				"name": "sm",
+				"value": "0px 4px 8px -1px hsl(0 0% 0% / 0.1), 0px 1px 2px -2px hsl(0 0% 0% / 0.1)",
+				"purpose": "Hover elevation only — rare."
+			}
+		],
+		"motion": [
+			{
+				"name": "ease-out-panel",
+				"value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+				"purpose": "Panel entrance — 0.35s opacity + translateY."
+			},
+			{
+				"name": "stagger-child",
+				"value": "0.06s",
+				"purpose": "Stagger between list/panel children in app dashboard."
+			}
+		],
+		"breakpoints": [
+			{ "name": "sm", "value": "640px" },
+			{ "name": "lg", "value": "1024px" }
+		]
+	},
+	"components": [
+		{
+			"name": "Primary Button",
+			"kind": "button",
+			"refersTo": "button-primary",
+			"description": "Main call to action — signup, add subscription, save.",
+			"html": "<button class=\"ds-btn-primary\" type=\"button\">Gain clarity now</button>",
+			"css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 2.5rem; padding: 0 1rem; font-family: Manrope, sans-serif; font-size: 0.875rem; font-weight: 500; color: oklch(0.9938 0.0013 106.4231); background: oklch(0.6908 0.1909 45.0151); border: 1px solid transparent; border-radius: 0.25rem; cursor: pointer; transition: background 0.15s ease, transform 0.1s ease; } .ds-btn-primary:hover { background: oklch(0.6908 0.1909 45.0151 / 0.8); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.745 0.1322 54.6845 / 0.5); } .ds-btn-primary:active { transform: translateY(1px); }"
+		},
+		{
+			"name": "Outline Button",
+			"kind": "button",
+			"refersTo": "button-outline",
+			"description": "Secondary actions — cancel, back, low-emphasis CTAs.",
+			"html": "<button class=\"ds-btn-outline\" type=\"button\">Cancel</button>",
+			"css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; padding: 0 0.625rem; font-family: Manrope, sans-serif; font-size: 0.875rem; font-weight: 500; color: oklch(0.2431 0.0076 95.3724); background: oklch(0.9938 0.0013 106.4231); border: 1px solid oklch(0.8852 0.0042 91.4508); border-radius: 0.25rem; box-shadow: 0px 4px 8px -1px hsl(0 0% 0% / 0.05); cursor: pointer; transition: background 0.15s ease; } .ds-btn-outline:hover { background: oklch(0.9556 0.0017 67.802); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.745 0.1322 54.6845 / 0.5); }"
+		},
+		{
+			"name": "Text Input",
+			"kind": "input",
+			"refersTo": "input-default",
+			"description": "Standard form field for subscription name, price, etc.",
+			"html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Netflix\" />",
+			"css": ".ds-input { width: 100%; height: 2.25rem; padding: 0.25rem 0.625rem; font-family: Manrope, sans-serif; font-size: 0.875rem; color: oklch(0.2431 0.0076 95.3724); background: transparent; border: 1px solid oklch(0.8852 0.0042 91.4508); border-radius: 0.25rem; box-shadow: 0px 4px 8px -1px hsl(0 0% 0% / 0.05); transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-input::placeholder { color: oklch(0.4981 0.0078 106.6789); } .ds-input:focus-visible { outline: none; border-color: oklch(0.745 0.1322 54.6845); box-shadow: 0 0 0 3px oklch(0.745 0.1322 54.6845 / 0.5); }"
+		},
+		{
+			"name": "Card",
+			"kind": "card",
+			"refersTo": "card-default",
+			"description": "Subscription summary or feature block container.",
+			"html": "<div class=\"ds-card\"><div class=\"ds-card-title\">Netflix</div><div class=\"ds-card-desc\">$15.99/month · Worth reviewing</div></div>",
+			"css": ".ds-card { display: flex; flex-direction: column; gap: 0.25rem; padding: 1.5rem; background: oklch(0.9923 0.0025 48.7201); color: oklch(0.2431 0.0076 95.3724); border-radius: 0.75rem; box-shadow: 0px 4px 8px -1px hsl(0 0% 0% / 0.05); outline: 1px solid oklch(0.2431 0.0076 95.3724 / 0.1); } .ds-card-title { font-family: Manrope, sans-serif; font-size: 1rem; font-weight: 500; line-height: 1.4; } .ds-card-desc { font-family: Manrope, sans-serif; font-size: 0.875rem; color: oklch(0.4981 0.0078 106.6789); line-height: 1.5; }"
+		},
+		{
+			"name": "Marketing Nav",
+			"kind": "nav",
+			"refersTo": "nav-marketing",
+			"description": "Landing page header — logo + serif wordmark.",
+			"html": "<nav class=\"ds-nav\"><span class=\"ds-nav-mark\">Subman</span></nav>",
+			"css": ".ds-nav { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 1rem 0; } .ds-nav-mark { font-family: \"Cormorant Garamond\", Georgia, serif; font-size: 1.5rem; font-weight: 400; color: oklch(0.2431 0.0076 95.3724); letter-spacing: -0.02em; }"
+		}
+	],
+	"narrative": {
+		"northStar": "The Friendly Audit",
+		"overview": "Subman looks like a fintech app that grew up reading magazines — Monzo's approachable money clarity, with Cormorant Garamond giving headlines editorial weight. The UI is product-first: dense enough to be useful, light enough to feel human. Wit lives in copy and micro-moments, not in decorative chrome.",
+		"keyCharacteristics": [
+			"Warm tangerine accent on cool near-white surfaces — restrained, not drenched",
+			"Serif display + sans body + mono for app chrome",
+			"Tight 4px base radius — confident, not pill-shaped",
+			"Subtle ring + xs shadow for depth; flat at rest on most surfaces",
+			"Motion via spring/ease-out reveals; always respects reduced motion"
+		],
+		"rules": [
+			{
+				"name": "The One Voice Rule",
+				"body": "Primary orange appears on ≤10% of any given screen. Its rarity signals action, not decoration.",
+				"section": "colors"
+			},
+			{
+				"name": "The No-Cream Rule",
+				"body": "Background neutrals stay at chroma ≤0.006. Warmth comes from accent and typography, not a sand-tinted body.",
+				"section": "colors"
+			},
+			{
+				"name": "The Pairing Rule",
+				"body": "Never stack two similar sans-serifs. Cormorant + Manrope is the only display/body pair.",
+				"section": "typography"
+			},
+			{
+				"name": "The Display Ceiling Rule",
+				"body": "Hero clamp max is 6rem (~96px). Larger reads as shouting, not designing.",
+				"section": "typography"
+			},
+			{
+				"name": "The Flat-By-Default Rule",
+				"body": "Surfaces are flat at rest. Shadows respond to state (hover, focus, modal), not decorate idle cards.",
+				"section": "elevation"
+			},
+			{
+				"name": "The No Ghost-Card Rule",
+				"body": "Never pair border: 1px solid with soft shadows ≥16px blur on the same element.",
+				"section": "elevation"
+			}
+		],
+		"dos": [
+			"Do use Warm Tangerine only for primary actions, links, and focus — ≤10% of surface area.",
+			"Do lead marketing headlines with Cormorant Garamond; keep forms and tables in Manrope.",
+			"Do use muted sections (Whisper bg) for hero containment instead of gradient fills.",
+			"Do respect prefers-reduced-motion: crossfade or instant state changes for all motion/react animations.",
+			"Do write candid, lightly witty copy in empty states and confirmations — Monzo energy, not stand-up comedy."
+		],
+		"donts": [
+			"Don't use generic SaaS patterns: purple gradients, hero metrics, identical icon+heading+blurb feature grids.",
+			"Don't guilt-trip in copy or UI — no alarmist red spend totals without context; clarity over shame.",
+			"Don't adopt corporate fintech visuals: navy/gold, stock photos, trust-badge walls.",
+			"Don't use AI-default UI: cream/sand body backgrounds, eyebrow kickers on every section, side-stripe card accents, gradient text.",
+			"Don't exceed 16px card radius or pair 1px borders with wide soft shadows on the same element.",
+			"Don't nest cards inside cards — use spacing and typography for hierarchy instead."
+		]
+	}
+}

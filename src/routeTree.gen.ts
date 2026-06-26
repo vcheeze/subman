@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as AcceptInviteRouteImport } from './routes/accept-invite'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as AuthRouteImport } from './routes/_auth'
@@ -18,6 +19,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPortalRouteImport } from './routes/api/portal'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as AuthedSettingsRouteImport } from './routes/_authed/settings'
+import { Route as AuthedOnboardingRouteImport } from './routes/_authed/onboarding'
 import { Route as AuthedAppRouteImport } from './routes/_authed/app'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthSigninRouteImport } from './routes/_auth/signin'
@@ -35,6 +37,11 @@ const TermsRoute = TermsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcceptInviteRoute = AcceptInviteRouteImport.update({
+  id: '/accept-invite',
+  path: '/accept-invite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -68,6 +75,11 @@ const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
 const AuthedSettingsRoute = AuthedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedOnboardingRoute = AuthedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedAppRoute = AuthedAppRouteImport.update({
@@ -114,11 +126,13 @@ const AuthedSubsSubIdEditRoute = AuthedSubsSubIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accept-invite': typeof AcceptInviteRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/signin': typeof AuthSigninRoute
   '/signup': typeof AuthSignupRoute
   '/app': typeof AuthedAppRoute
+  '/onboarding': typeof AuthedOnboardingRoute
   '/settings': typeof AuthedSettingsRoute
   '/api/checkout': typeof ApiCheckoutRoute
   '/api/portal': typeof ApiPortalRoute
@@ -131,11 +145,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accept-invite': typeof AcceptInviteRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/signin': typeof AuthSigninRoute
   '/signup': typeof AuthSignupRoute
   '/app': typeof AuthedAppRoute
+  '/onboarding': typeof AuthedOnboardingRoute
   '/settings': typeof AuthedSettingsRoute
   '/api/checkout': typeof ApiCheckoutRoute
   '/api/portal': typeof ApiPortalRoute
@@ -150,11 +166,13 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_authed': typeof AuthedRouteWithChildren
   '/about': typeof AboutRoute
+  '/accept-invite': typeof AcceptInviteRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/_auth/signin': typeof AuthSigninRoute
   '/_auth/signup': typeof AuthSignupRoute
   '/_authed/app': typeof AuthedAppRoute
+  '/_authed/onboarding': typeof AuthedOnboardingRoute
   '/_authed/settings': typeof AuthedSettingsRoute
   '/api/checkout': typeof ApiCheckoutRoute
   '/api/portal': typeof ApiPortalRoute
@@ -169,11 +187,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/accept-invite'
     | '/privacy'
     | '/terms'
     | '/signin'
     | '/signup'
     | '/app'
+    | '/onboarding'
     | '/settings'
     | '/api/checkout'
     | '/api/portal'
@@ -186,11 +206,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/accept-invite'
     | '/privacy'
     | '/terms'
     | '/signin'
     | '/signup'
     | '/app'
+    | '/onboarding'
     | '/settings'
     | '/api/checkout'
     | '/api/portal'
@@ -204,11 +226,13 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_authed'
     | '/about'
+    | '/accept-invite'
     | '/privacy'
     | '/terms'
     | '/_auth/signin'
     | '/_auth/signup'
     | '/_authed/app'
+    | '/_authed/onboarding'
     | '/_authed/settings'
     | '/api/checkout'
     | '/api/portal'
@@ -224,6 +248,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   AuthedRoute: typeof AuthedRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AcceptInviteRoute: typeof AcceptInviteRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   ApiCheckoutRoute: typeof ApiCheckoutRoute
@@ -245,6 +270,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accept-invite': {
+      id: '/accept-invite'
+      path: '/accept-invite'
+      fullPath: '/accept-invite'
+      preLoaderRoute: typeof AcceptInviteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -294,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthedSettingsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/onboarding': {
+      id: '/_authed/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthedOnboardingRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/app': {
@@ -383,6 +422,7 @@ const AuthedSubsSubIdRouteWithChildren = AuthedSubsSubIdRoute._addFileChildren(
 
 interface AuthedRouteChildren {
   AuthedAppRoute: typeof AuthedAppRoute
+  AuthedOnboardingRoute: typeof AuthedOnboardingRoute
   AuthedSettingsRoute: typeof AuthedSettingsRoute
   AuthedSubsSubIdRoute: typeof AuthedSubsSubIdRouteWithChildren
   AuthedSubsAddRoute: typeof AuthedSubsAddRoute
@@ -390,6 +430,7 @@ interface AuthedRouteChildren {
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAppRoute: AuthedAppRoute,
+  AuthedOnboardingRoute: AuthedOnboardingRoute,
   AuthedSettingsRoute: AuthedSettingsRoute,
   AuthedSubsSubIdRoute: AuthedSubsSubIdRouteWithChildren,
   AuthedSubsAddRoute: AuthedSubsAddRoute,
@@ -403,6 +444,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   AuthedRoute: AuthedRouteWithChildren,
   AboutRoute: AboutRoute,
+  AcceptInviteRoute: AcceptInviteRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   ApiCheckoutRoute: ApiCheckoutRoute,

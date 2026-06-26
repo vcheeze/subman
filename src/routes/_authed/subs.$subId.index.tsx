@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useId, useState } from 'react'
 
+import { MoveSubscriptionPanel } from '@/components/move-subscription-panel'
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -26,6 +27,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { Switch } from '@/components/ui/switch'
 import { toastManager } from '@/components/ui/toast'
 import type { Subscription } from '@/db/schema'
+import { personalOrgId } from '@/lib/org'
 import { cn } from '@/lib/utils'
 import {
 	deleteSubscription,
@@ -79,34 +81,36 @@ function RouteComponent() {
 	const { subId } = Route.useParams()
 	const navigate = Route.useNavigate()
 	const statusSwitchId = useId()
-	const userId = Route.useRouteContext({
-		select: (context) => context.user?.id ?? '',
+	const organizationId = Route.useRouteContext({
+		select: (context) =>
+			context.activeOrganizationId ??
+			(context.user ? personalOrgId(context.user.id) : ''),
 	})
 	const queryClient = useQueryClient()
 	const { data, isLoading } = useQuery(
-		subscriptionByIdQueryOptions(subId, userId),
+		subscriptionByIdQueryOptions(subId, organizationId),
 	)
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 	const statusMutation = useMutation({
 		mutationFn: updateSubscriptionStatus,
 		onMutate: async ({ data: mutationData }) => {
-			await queryClient.cancelQueries({ queryKey: ['subscription', subId] })
 			await queryClient.cancelQueries({
-				queryKey: ['subscriptions', userId],
+				queryKey: ['subscription', organizationId, subId],
 			})
 
 			const previousSubscription = queryClient.getQueryData<Subscription>([
 				'subscription',
+				organizationId,
 				subId,
 			])
 			const previousSubscriptions = queryClient.getQueryData<Subscription[]>([
 				'subscriptions',
-				userId,
+				organizationId,
 			])
 			const optimisticUpdatedAt = new Date()
 
 			queryClient.setQueryData<Subscription>(
-				['subscription', subId],
+				['subscription', organizationId, subId],
 				(current) =>
 					current
 						? {
@@ -117,7 +121,7 @@ function RouteComponent() {
 						: current,
 			)
 			queryClient.setQueryData<Subscription[]>(
-				['subscriptions', userId],
+				['subscriptions', organizationId],
 				(current) =>
 					current?.map((subscription) =>
 						subscription.id === subId
@@ -134,11 +138,11 @@ function RouteComponent() {
 		},
 		onError: (_error, _variables, context) => {
 			queryClient.setQueryData(
-				['subscription', subId],
+				['subscription', organizationId, subId],
 				context?.previousSubscription,
 			)
 			queryClient.setQueryData(
-				['subscriptions', userId],
+				['subscriptions', organizationId],
 				context?.previousSubscriptions,
 			)
 			toastManager.add({
@@ -148,9 +152,12 @@ function RouteComponent() {
 			})
 		},
 		onSuccess: (updatedSubscription) => {
-			queryClient.setQueryData(['subscription', subId], updatedSubscription)
+			queryClient.setQueryData(
+				['subscription', organizationId, subId],
+				updatedSubscription,
+			)
 			queryClient.setQueryData<Subscription[]>(
-				['subscriptions', userId],
+				['subscriptions', organizationId],
 				(current) =>
 					current?.map((subscription) =>
 						subscription.id === subId ? updatedSubscription : subscription,
@@ -159,18 +166,22 @@ function RouteComponent() {
 		},
 		onSettled: async () => {
 			await queryClient.invalidateQueries({
-				queryKey: ['subscriptions', userId],
+				queryKey: ['subscriptions', organizationId],
 			})
-			await queryClient.invalidateQueries({ queryKey: ['subscription', subId] })
+			await queryClient.invalidateQueries({
+				queryKey: ['subscription', organizationId, subId],
+			})
 		},
 	})
 	const deleteMutation = useMutation({
 		mutationFn: deleteSubscription,
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({
-				queryKey: ['subscriptions', userId],
+				queryKey: ['subscriptions', organizationId],
 			})
-			await queryClient.invalidateQueries({ queryKey: ['subscription', subId] })
+			await queryClient.invalidateQueries({
+				queryKey: ['subscription', organizationId, subId],
+			})
 			navigate({ to: '/app' })
 		},
 	})
@@ -221,7 +232,7 @@ function RouteComponent() {
 								id={statusSwitchId}
 								onCheckedChange={(checked) => {
 									statusMutation.mutate({
-										data: { subId, userId, isActive: checked },
+										data: { subId, isActive: checked },
 									})
 								}}
 							/>
@@ -364,6 +375,12 @@ function RouteComponent() {
 						</CardContent>
 					</Card>
 
+					<MoveSubscriptionPanel
+						organizationId={organizationId}
+						subId={subId}
+						subName={data.name}
+					/>
+
 					<div className='flex items-center justify-between gap-4 border-muted border-t p-6 max-sm:flex-col max-sm:items-stretch'>
 						<div>
 							<div className='font-medium'>Remove this subscription</div>
@@ -402,7 +419,7 @@ function RouteComponent() {
 							disabled={deleteMutation.isPending}
 							onClick={() => {
 								deleteMutation.mutate({
-									data: { subId, userId },
+									data: { subId },
 								})
 							}}
 							variant='destructive'

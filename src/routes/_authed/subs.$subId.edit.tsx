@@ -25,6 +25,7 @@ import {
 	subscriptionByIdQueryOptions,
 	upsertSubscription,
 } from '@/queries/subscriptions'
+import { personalOrgId } from '@/lib/org'
 
 export const Route = createFileRoute('/_authed/subs/$subId/edit')({
 	component: RouteComponent,
@@ -43,11 +44,13 @@ export type SubscriptionFormData = z.infer<typeof subscriptionSchema>
 function RouteComponent() {
 	const { subId } = Route.useParams()
 	const navigate = Route.useNavigate()
-	const userId = Route.useRouteContext({
-		select: (context) => context.user?.id ?? '',
+	const organizationId = Route.useRouteContext({
+		select: (context) =>
+			context.activeOrganizationId ??
+			(context.user ? personalOrgId(context.user.id) : ''),
 	})
 	const { data, isLoading } = useQuery(
-		subscriptionByIdQueryOptions(subId, userId),
+		subscriptionByIdQueryOptions(subId, organizationId),
 	)
 
 	const form = useForm({
@@ -63,7 +66,7 @@ function RouteComponent() {
 		},
 		onSubmit: async ({ value }) => {
 			try {
-				await upsertSubscription({ data: { values: value, userId, subId } })
+				await upsertSubscription({ data: { values: value, subId } })
 				navigate({ to: '/app' })
 			} catch {
 				toastManager.add({

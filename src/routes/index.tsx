@@ -1,166 +1,266 @@
 import { IconDroplet, IconEyeClosed, IconShieldLock } from '@tabler/icons-react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { motion } from 'motion/react'
+import { motion, useReducedMotion, type Variants } from 'motion/react'
 
+import { LandingChargesSection } from '@/components/landing-charges-section'
+import { LandingProductPreview } from '@/components/landing-product-preview'
 import { Button } from '@/components/ui/button'
-import {
-	Card,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card'
 
 export const Route = createFileRoute('/')({
 	component: Home,
 })
 
+const EASE_OUT_QUINT = [0.22, 1, 0.36, 1] as const
+const HERO_STAGGER = 0.07
+const TRUST_STAGGER = 0.06
+
+const TRUST_ITEMS = [
+	{
+		icon: IconShieldLock,
+		title: 'No bank connections',
+		description:
+			'You add subscriptions yourself. We never pull from your accounts.',
+	},
+	{
+		icon: IconEyeClosed,
+		title: 'Anonymized tracking',
+		description:
+			'Product analytics stay anonymous — your subscription list is yours.',
+	},
+	{
+		icon: IconDroplet,
+		title: 'Just you and your subs',
+		description: 'No ads, no upsells. A clear picture of cost and value.',
+	},
+] as const
+
+function fadeUpVariants(reduceMotion: boolean): Variants {
+	if (reduceMotion) {
+		return {
+			hidden: { opacity: 1, y: 0 },
+			visible: { opacity: 1, y: 0 },
+		}
+	}
+
+	return {
+		hidden: { opacity: 0, y: 12 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: { duration: 0.42, ease: EASE_OUT_QUINT },
+		},
+	}
+}
+
+function staggerContainer(
+	reduceMotion: boolean,
+	stagger = HERO_STAGGER,
+): Variants {
+	if (reduceMotion) {
+		return {
+			hidden: {},
+			visible: {},
+		}
+	}
+
+	return {
+		hidden: {},
+		visible: {
+			transition: {
+				staggerChildren: stagger,
+				delayChildren: 0.04,
+			},
+		},
+	}
+}
+
+function LandingNav({ reduceMotion }: { reduceMotion: boolean }) {
+	return (
+		<motion.nav
+			animate={{ opacity: 1, y: 0 }}
+			className='container mx-auto flex max-w-6xl items-center justify-between gap-4 px-2 py-4 lg:px-0 lg:py-6'
+			initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+			transition={{
+				duration: reduceMotion ? 0 : 0.35,
+				ease: EASE_OUT_QUINT,
+			}}
+		>
+			<Link
+				aria-label='Subman home'
+				className='flex items-center gap-2 text-foreground'
+				to='/'
+				viewTransition
+			>
+				<img alt='Subman logo' className='h-6' src='/logo_light.svg' />
+				<span className='font-serif text-2xl'>Subman</span>
+			</Link>
+			<motion.div
+				whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+				whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+			>
+				<Button
+					render={<Link to='/signin' viewTransition />}
+					size='sm'
+					variant='outline'
+				>
+					Sign in
+				</Button>
+			</motion.div>
+		</motion.nav>
+	)
+}
+
+function LandingCta({
+	reduceMotion,
+	className,
+}: {
+	reduceMotion: boolean
+	className?: string
+}) {
+	return (
+		<motion.div
+			className={className}
+			whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+			whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+		>
+			<Button render={<Link to='/signup' viewTransition />} size='lg'>
+				Start your audit
+			</Button>
+		</motion.div>
+	)
+}
+
 function Home() {
-	const subs = [
-		{
-			name: 'Netflix',
-			cost: '$15.99/month',
-			logo: '/images/netflix.png',
-		},
-		{
-			name: 'Spotify',
-			cost: '$16.99/month',
-			logo: '/images/spotify.png',
-		},
-		{
-			name: 'ChatGPT',
-			cost: '$20/month',
-			logo: '/images/openai.png',
-		},
-		{
-			name: 'Amazon Prime',
-			cost: '$14.99/month',
-			logo: '/images/prime.png',
-		},
-	]
+	const reduceMotion = useReducedMotion() ?? false
+	const heroItem = fadeUpVariants(reduceMotion)
+	const trustItem = fadeUpVariants(reduceMotion)
 
 	return (
-		<>
-			<section className='px-2 pb-2 font-mono lg:px-4 lg:pb-4'>
-				<nav className='container mx-auto flex max-w-7xl items-center justify-center gap-2 py-4 lg:py-6'>
-					<img alt='logo' className='h-6' src='/logo_light.svg' />
-					<div className='font-serif text-2xl'>Subman</div>
-				</nav>
-				<motion.div
-					animate={{ opacity: 1, transition: { type: 'spring' } }}
-					className='container mx-auto flex h-[75vh] max-w-7xl flex-col items-center justify-center rounded-2xl bg-muted p-4 text-center lg:p-8'
-					initial={{ opacity: 0 }}
+		<div className='font-sans'>
+			<LandingNav reduceMotion={reduceMotion} />
+
+			<section className='px-2 pb-2 lg:px-4 lg:pb-4'>
+				<div className='container mx-auto max-w-6xl rounded-xl bg-muted px-4 py-10 lg:px-10 lg:py-16'>
+					<div className='grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-8'>
+						<motion.div
+							animate='visible'
+							className='text-center lg:text-left'
+							initial={reduceMotion ? false : 'hidden'}
+							variants={staggerContainer(reduceMotion)}
+						>
+							<motion.h1
+								className='mb-6 font-semibold font-serif text-[clamp(2.5rem,6vw,4.5rem)] text-foreground leading-[1.1] text-balance tracking-[-0.02em]'
+								variants={heroItem}
+							>
+								Know the true value of your subscriptions
+							</motion.h1>
+							<motion.p
+								className='mx-auto mb-8 max-w-xl text-base text-foreground/80 leading-relaxed text-pretty lg:mx-0 lg:text-lg'
+								variants={heroItem}
+							>
+								You don&apos;t need another budgeting app. You need to know
+								what&apos;s worth your budget — and what you&apos;re happy to
+								keep.
+							</motion.p>
+							<motion.div
+								className='flex flex-col items-center gap-2 lg:items-start'
+								variants={heroItem}
+							>
+								<LandingCta reduceMotion={reduceMotion} />
+								<p className='text-muted-foreground text-xs'>
+									Free to start. No bank login required.
+								</p>
+							</motion.div>
+						</motion.div>
+						<div className='flex justify-center lg:justify-end'>
+							<LandingProductPreview reduceMotion={reduceMotion} />
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<LandingChargesSection reduceMotion={reduceMotion} />
+
+			<section className='container mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-20'>
+				<motion.h2
+					className='mb-10 font-semibold font-serif text-[clamp(1.875rem,4vw,2.5rem)] text-foreground leading-[1.15] text-balance tracking-[-0.02em]'
+					initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+					transition={{
+						duration: reduceMotion ? 0 : 0.4,
+						ease: EASE_OUT_QUINT,
+					}}
+					viewport={{ once: true, margin: '-40px' }}
+					whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
 				>
-					<h1 className='mb-8 font-semibold font-serif text-6xl lg:text-8xl text-muted-foreground'>
-						<span className='text-foreground'>Simplicity</span> and{' '}
-						<span className='text-foreground'>Clarity</span> for Your
-						Subscriptions
-					</h1>
-					<p className='mb-8 text-muted-foreground leading-8 lg:text-lg'>
-						You don't need another budgeting app. You need to know what's worth
-						your budget.
-					</p>
-					<Button render={<Link to='/signup' viewTransition />} size='lg'>
-						Gain clarity now
-					</Button>
-					<p className='mt-2 text-muted-foreground text-xs'>
-						Yes, it's free to start.
-					</p>
-					{/* <div className="flex w-full max-w-sm items-center gap-2">
-            <Input placeholder="Email" type="email" />
-            <Button>Get Early Access</Button>
-          </div>
-          <p className="mt-4 text-muted-foreground text-xs">
-            👉 Join the waitlist — reflect before you renew.
-          </p> */}
-				</motion.div>
-			</section>
-
-			<section className='container mx-auto max-w-7xl p-10 lg:p-16 lg:my-32'>
-				<h2 className='mb-16 font-semibold font-serif text-3xl lg:text-6xl'>
-					You're Probably Paying for Things You Don't Use — or Don't Even Want
-				</h2>
-				<div className='mb-16 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
-					{subs.map((sub) => (
-						<Card key={sub.name}>
-							<CardHeader>
-								<img alt={sub.name} className='h-8' src={sub.logo} />
-								<CardTitle className='mt-2'>{sub.name}</CardTitle>
-								<CardDescription>{sub.cost}</CardDescription>
-							</CardHeader>
-						</Card>
+					Your data stays yours
+				</motion.h2>
+				<motion.ul
+					className='grid gap-8 sm:grid-cols-3'
+					initial={reduceMotion ? false : 'hidden'}
+					variants={staggerContainer(reduceMotion, TRUST_STAGGER)}
+					viewport={{ once: true, amount: 0.25 }}
+					whileInView={reduceMotion ? undefined : 'visible'}
+				>
+					{TRUST_ITEMS.map((item) => (
+						<motion.li
+							className='space-y-2'
+							key={item.title}
+							variants={trustItem}
+						>
+							<item.icon aria-hidden='true' className='size-7 text-primary' />
+							<p className='font-medium text-foreground'>{item.title}</p>
+							<p className='text-muted-foreground text-sm leading-relaxed text-pretty'>
+								{item.description}
+							</p>
+						</motion.li>
 					))}
-				</div>
-				{/* <p className="leading-7">It all adds up.</p> */}
-				{/* <p className="leading-7">But price isn't the problem. It's value.</p> */}
-				<p className='mb-2 leading-7'>
-					We've all said,{' '}
-					<span className='italic'>“Eh, it's just $15.99.”</span>
-				</p>
-				<p className='font-semibold leading-7'>
-					Until “just” becomes $159.99/month for things that don't bring us joy
-					or utility.
-				</p>
+				</motion.ul>
 			</section>
 
-			<section className='container mx-auto max-w-7xl p-10 lg:p-16 lg:my-32'>
-				<h2 className='mb-16 font-semibold font-serif text-3xl lg:text-6xl'>
-					Subman Helps You Cut Through the Noise
-				</h2>
-				<p className='mb-2 leading-7'>It's not about spending less.</p>
-				<p className='font-semibold leading-7'>
-					It's about spending with intention.
-				</p>
-			</section>
-
-			<section className='container mx-auto max-w-7xl p-10 lg:p-16'>
-				<h2 className='mb-16 font-semibold font-serif text-3xl lg:text-6xl'>
-					Built for those who care where their money — and data — goes.
-				</h2>
-				<div className='grid grid-cols-1 md:grid-cols-3'>
-					<div className='rounded-none border border-dashed p-4 md:p-6'>
-						<IconShieldLock className='size-8' />
-						<div className='mt-2'>No bank connections</div>
-					</div>
-					<div className='rounded-none border border-dashed p-4 md:p-6'>
-						<IconEyeClosed className='size-8' />
-						<div className='mt-2'>Anonymized tracking</div>
-					</div>
-					<div className='rounded-none border border-dashed p-4 md:p-6'>
-						<IconDroplet className='size-8' />
-						<div className='mt-2'>Just you, your subs, and clarity</div>
-					</div>
-				</div>
-			</section>
-
-			<footer className='p-2 lg:p-8'>
-				<div className='container mx-auto flex max-w-7xl flex-col items-center justify-center rounded-2xl bg-muted p-4 text-center lg:p-8'>
-					<h2 className='mb-10 font-semibold font-serif text-3xl lg:mb-16 lg:text-6xl'>
-						Reflect Before You Renew.
+			<footer className='mt-2 px-2 pb-2 lg:mt-4 lg:px-4 lg:pb-8'>
+				<div className='container mx-auto flex max-w-6xl flex-col items-center rounded-xl bg-muted px-6 py-12 text-center lg:px-10 lg:py-16'>
+					<h2 className='mb-6 font-semibold font-serif text-[clamp(1.875rem,4vw,3rem)] text-foreground leading-[1.15] text-balance tracking-[-0.02em]'>
+						Reflect before you renew
 					</h2>
-					<Button render={<Link to='/signup' viewTransition />} size='lg'>
-						Gain clarity now
-					</Button>
+					<p className='mb-8 max-w-lg text-foreground/80 text-pretty'>
+						Not another expense tracker — a better relationship with what you
+						pay for.
+					</p>
+					<LandingCta reduceMotion={reduceMotion} />
 					<p className='mt-2 text-muted-foreground text-xs'>
 						No spam, no noise — just{' '}
 						<span className='text-foreground'>value</span>.
 					</p>
-					<h3 className='mt-10 mb-4 font-serif text-xl lg:mt-16 lg:mb-8 lg:text-2xl'>
-						Not another expense tracker. Just a better relationship with what
-						you pay for.
-					</h3>
-					<p className='text-muted-foreground text-xs'>
-						Built by{' '}
+					<nav
+						aria-label='Footer'
+						className='mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-muted-foreground text-xs'
+					>
+						<Link
+							className='underline-offset-4 hover:text-foreground hover:underline'
+							to='/privacy'
+							viewTransition
+						>
+							Privacy
+						</Link>
+						<Link
+							className='underline-offset-4 hover:text-foreground hover:underline'
+							to='/terms'
+							viewTransition
+						>
+							Terms
+						</Link>
+						<span aria-hidden='true'>·</span>
 						<a
-							className='underline hover:text-foreground'
+							className='underline-offset-4 hover:text-foreground hover:underline'
 							href='https://vcheeze.pages.dev'
 							rel='noopener'
 							target='_blank'
 						>
-							vcheeze
+							Built by vcheeze
 						</a>
-					</p>
+					</nav>
 				</div>
 			</footer>
-		</>
+		</div>
 	)
 }

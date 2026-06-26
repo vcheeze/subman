@@ -192,3 +192,12 @@ pnpm build      # Ensures TypeScript compilation
 ```
 
 This ensures code follows project standards and maintains type safety.
+
+## Design Context
+
+Strategic and visual design guidance lives outside this file:
+
+- **[PRODUCT.md](./PRODUCT.md)** — register (`product`), users, purpose, brand personality, anti-references, and design principles. Read before any UI work.
+- **[DESIGN.md](./DESIGN.md)** — OKLCH tokens, typography (Cormorant Garamond + Manrope + Geist Mono), components, elevation, and do's/don'ts. DESIGN.md wins on visual decisions; PRODUCT.md wins on voice and strategy.
+
+Use `$impeccable` commands (e.g. `craft`, `polish`, `live`) for design iteration; live mode is pre-configured at `.impeccable/live/config.json`.

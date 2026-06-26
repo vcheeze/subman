@@ -3,11 +3,11 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 // import { NotFound } from '@/components/NotFound'
 
 export const Route = createFileRoute('/_auth')({
-	beforeLoad: ({ context }) => {
+	beforeLoad: ({ context, location }) => {
 		if (context.user) {
-			throw redirect({
-				to: '/app',
-			})
+			const redirectTo =
+				new URLSearchParams(location.search).get('redirect') || '/app'
+			throw redirect({ to: redirectTo })
 		}
 	},
 	head: () => ({

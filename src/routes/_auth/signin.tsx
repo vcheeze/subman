@@ -77,7 +77,7 @@ function RouteComponent() {
 	const handleGoogleLogin = async () => {
 		await authClient.signIn.social({
 			provider: 'google',
-			callbackURL: '/app',
+			callbackURL: redirect,
 		})
 	}
 

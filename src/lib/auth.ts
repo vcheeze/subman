@@ -2,9 +2,12 @@ import { checkout, polar, portal, usage } from '@polar-sh/better-auth'
 import { Polar } from '@polar-sh/sdk'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { organization } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { db } from '@/db'
 import * as schema from '@/db/schema'
+import { buildInvitationUrl, ensurePersonalOrganization } from '@/lib/org-server'
+import { sendHouseholdInvitationEmail } from '@/lib/email'
 
 const polarClient = new Polar({
 	accessToken: process.env.POLAR_ACCESS_TOKEN,
@@ -15,6 +18,15 @@ export const auth = betterAuth({
 		provider: 'pg',
 		schema,
 	}),
+	databaseHooks: {
+		user: {
+			create: {
+				after: async (user) => {
+					await ensurePersonalOrganization(user)
+				},
+			},
+		},
+	},
 	emailAndPassword: {
 		enabled: true,
 	},
@@ -25,9 +37,25 @@ export const auth = betterAuth({
 		},
 	},
 	plugins: [
+		organization({
+			allowUserToCreateOrganization: true,
+			invitationExpiresIn: 60 * 60 * 48,
+			async sendInvitationEmail(data) {
+				const invitationUrl = buildInvitationUrl(data.id)
+				await sendHouseholdInvitationEmail({
+					to: data.email,
+					inviterName:
+						data.inviter.user?.name ||
+						data.inviter.user?.email ||
+						'Someone',
+					organizationName: data.organization.name,
+					invitationUrl,
+				})
+			},
+		}),
 		polar({
 			client: polarClient,
-			createCustomerOnSignUp: true,
+			createCustomerOnSignUp: false,
 			use: [
 				checkout({
 					products: [

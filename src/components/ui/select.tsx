@@ -6,10 +6,19 @@ import {
 	IconChevronUp,
 	IconSelector,
 } from '@tabler/icons-react'
+import type * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
-const Select = SelectPrimitive.Root
+/** Pass `{ value, label }[]` on `Select` so `SelectValue` shows labels, not raw values. */
+export type SelectItemOption<Value = string> = {
+	value: Value
+	label: React.ReactNode
+}
+
+function Select(props: SelectPrimitive.Root.Props<string>) {
+	return <SelectPrimitive.Root {...props} />
+}
 
 function SelectTrigger({
 	className,
